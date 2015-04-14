@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Sunshine</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="june24">Today, June 24</string>
+    <string name="twenty_one">21°</string>
+    <string name="eight">8°</string>
+    <string name="cloudy">Cloudy</string>
+
+    <!-- List item forecast :) -->
+    <string name="list_item_1">Today - Sunny - 88 / 63</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
