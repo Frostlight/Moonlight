@@ -51,9 +51,9 @@ public class ForecastFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.action_refresh:
                 return true;
-            /*case R.id.action:
-                showHelp();
-                return true;*/
+            case R.id.action_settings:
+                //showHelp();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
