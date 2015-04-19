@@ -50,6 +50,7 @@ public class ForecastFragment extends Fragment {
         // Handle item selection
         switch (item.getItemId()) {
             case R.id.action_refresh:
+                new FetchWeatherTask().execute();
                 return true;
             case R.id.action_settings:
                 //showHelp();
@@ -130,6 +131,8 @@ public class ForecastFragment extends Fragment {
                     forecastJsonStr = null;
                 }
                 forecastJsonStr = buffer.toString();
+
+                Log.v(App.getTag(), "forecastJsonStr: " + forecastJsonStr);
             } catch (IOException e) {
                 //error
                 Log.e("PlaceholderFragment", Log.getStackTraceString(new Exception()));
