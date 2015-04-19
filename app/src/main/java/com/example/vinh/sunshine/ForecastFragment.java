@@ -1,5 +1,6 @@
 package com.example.vinh.sunshine;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -77,6 +77,7 @@ public class ForecastFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
+
         String[] forecastArray = {
                 "Today - Sunny - 30/35",
                 "Tomorrow - Foggy - 70/40",
@@ -101,11 +102,17 @@ public class ForecastFragment extends Fragment {
                 @Override
                 public void onItemClick(AdapterView<?> AdapterView, View view, int i, long l)
                 {
-                    //CharSequence text = Integer.toString(i)+" "+Long.toString(l);
-                    CharSequence text = AdapterView.getItemAtPosition(i).toString();
+                    //Legacy toast, launches detail activity instead
+                    /*CharSequence text = AdapterView.getItemAtPosition(i).toString();
                     int duration = Toast.LENGTH_SHORT;
                     Toast toast = Toast.makeText(view.getContext(), text, duration);
-                    toast.show();
+                    toast.show();*/
+
+                    //Explicit intent to start DetailActivity with the weather information
+                    Intent details = new Intent(view.getContext(), DetailActivity.class); //DetailActivity.class);
+                    //details.setData(Uri.parse(AdapterView.getItemAtPosition(i).toString()));
+                    details.putExtra(Intent.EXTRA_TEXT, AdapterView.getItemAtPosition(i).toString());
+                    startActivity(details);
                 }
             }
         );
