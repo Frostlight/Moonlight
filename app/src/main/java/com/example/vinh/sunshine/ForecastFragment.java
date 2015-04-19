@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -96,10 +97,15 @@ public class ForecastFragment extends Fragment {
         listView.setAdapter(adapter);
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+                //show a toast with the weather information
                 @Override
                 public void onItemClick(AdapterView<?> AdapterView, View view, int i, long l)
                 {
-                    
+                    //CharSequence text = Integer.toString(i)+" "+Long.toString(l);
+                    CharSequence text = AdapterView.getItemAtPosition(i).toString();
+                    int duration = Toast.LENGTH_SHORT;
+                    Toast toast = Toast.makeText(view.getContext(), text, duration);
+                    toast.show();
                 }
             }
         );
