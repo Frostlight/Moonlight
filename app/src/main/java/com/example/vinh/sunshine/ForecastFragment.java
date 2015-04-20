@@ -206,8 +206,26 @@ public class ForecastFragment extends Fragment {
                 // Temperatures are in a child object called "temp".  Try not to name variables
                 // "temp" when working with temperature.  It confuses everybody.
                 JSONObject temperatureObject = dayForecast.getJSONObject(OWM_TEMPERATURE);
+
+                //Get unit preference from settings
+                SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                String units = prefs.getString(getString(R.string.pref_unit_key),
+                        getString(R.string.pref_unit_default));
+
+
                 double high = temperatureObject.getDouble(OWM_MAX);
                 double low = temperatureObject.getDouble(OWM_MIN);
+
+                //A few logging statements to verify celsius/fahrenheit functioning properly
+                //Log.v(App.getTag(), "Units: "+units);
+                //Log.v(App.getTag(), getResources().getStringArray(R.array.unit_values)[0]); //celsius
+                //Log.v(App.getTag(), getResources().getStringArray(R.array.unit_values)[1]); //fahrenheit
+
+                //if units settings is fahrenheit, need to convert high and low accordingly
+                if (units.compareTo(getResources().getStringArray(R.array.unit_values)[1]) == 0) {
+                    high = 9*high/5 + 32;
+                    low = 9*low/5 + 32;
+                }
 
                 highAndLow = formatHighLows(high, low);
                 resultStrs[i] = day + " - " + description + " - " + highAndLow;
