@@ -14,8 +14,8 @@
     <!-- List item forecast :) -->
     <string name="list_item_1">Today - Sunny - 88 / 63</string>
 
-<!-- TODO: Remove or change this placeholder text -->
+    <!-- Fragment titles -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="title_activity_detail">DetailActivity</string>
-    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="title_activity_detail">Details</string>
+    <string name="title_activity_settings">Settings</string>
 </resources>

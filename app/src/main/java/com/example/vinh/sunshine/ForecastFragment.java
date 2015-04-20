@@ -64,9 +64,8 @@ public class ForecastFragment extends Fragment {
             case R.id.action_refresh:
                 new FetchWeatherTask().execute("94043");
                 return true;
-            case R.id.action_settings:
-                //showHelp();
-                return true;
+            //case R.id.action_settings:
+            //    return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
