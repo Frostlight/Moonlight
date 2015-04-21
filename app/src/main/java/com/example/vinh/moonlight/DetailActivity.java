@@ -1,4 +1,4 @@
-package com.example.vinh.sunshine;
+package com.example.vinh.moonlight;
 
 import android.content.Intent;
 import android.os.Bundle;

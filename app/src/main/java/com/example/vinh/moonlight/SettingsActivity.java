@@ -1,4 +1,4 @@
-package com.example.vinh.sunshine;
+package com.example.vinh.moonlight;
 
 import android.os.Bundle;
 import android.preference.ListPreference;

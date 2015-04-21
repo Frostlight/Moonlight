@@ -1,4 +1,4 @@
-package com.example.vinh.sunshine;
+package com.example.vinh.moonlight;
 
 /**
  * Created by Vinh on 4/18/2015.
