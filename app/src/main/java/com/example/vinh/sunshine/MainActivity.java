@@ -56,8 +56,6 @@ public class MainActivity extends ActionBarActivity {
             case R.id.view_map:
                 //the base url and query names
                 //format is geo:0,0?q=(preferred location)
-                final String BASE_URL = "geo:";
-                final String LONG_LAT = "0,0";
                 final String QUERY_PARAM = "q";
 
                 //get preferred location from preferences
@@ -67,7 +65,7 @@ public class MainActivity extends ActionBarActivity {
                 //Log.v(App.getTag(), "Location: " + location);
 
                 //build the uri and launch intent
-                Uri built_uri = Uri.parse(BASE_URL+Uri.encode(LONG_LAT)+"?").buildUpon()
+                Uri built_uri = Uri.parse("geo:"+Uri.encode("0,0")+"?").buildUpon()
                         .appendQueryParameter(QUERY_PARAM, location)
                         .build();
                 //Log.v(App.getTag(), "Built uri: " + built_uri.toString());
