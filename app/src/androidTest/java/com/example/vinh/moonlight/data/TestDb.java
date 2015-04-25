@@ -15,6 +15,7 @@
  */
 package com.example.vinh.moonlight.data;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.test.AndroidTestCase;
@@ -80,7 +81,7 @@ public class TestDb extends AndroidTestCase {
         c = db.rawQuery("PRAGMA table_info(" + WeatherContract.LocationEntry.TABLE_NAME + ")",
                 null);
 
-        assertTrue("Error: This means that we were unable to query the database for table information.",
+        assertTrue("Error: This means that we were unable to query the database for table information",
                 c.moveToFirst());
 
         // Build a HashSet of all of the column names we want to look for
@@ -112,22 +113,60 @@ public class TestDb extends AndroidTestCase {
     */
     public void testLocationTable() {
         // First step: Get reference to writable database
+        WeatherDbHelper dbHelper = new WeatherDbHelper(this.getContext());
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // Create ContentValues of what you want to insert
         // (you can use the createNorthPoleLocationValues if you wish)
+        String testLocationSetting = "99705";
+        String testCityName = "North Pole";
+        double testLatitude = 64.7488;
+        double testLongitude = -147.353;
+
+        ContentValues testValues = new ContentValues();
+        testValues.put(WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING, testLocationSetting);
+        testValues.put(WeatherContract.LocationEntry.COLUMN_CITY_NAME, testCityName);
+        testValues.put(WeatherContract.LocationEntry.COLUMN_COORD_LONG, testLongitude);
+        testValues.put(WeatherContract.LocationEntry.COLUMN_COORD_LAT, testLatitude);
 
         // Insert ContentValues into database and get a row ID back
+        long locationRowId;
+        locationRowId = db.insert(WeatherContract.LocationEntry.TABLE_NAME, null, testValues);
+
+        // Verify insertion was successful
+        assertTrue("Error: Insertion was unsuccessful", locationRowId != -1);
 
         // Query the database and receive a Cursor back
+        //Table: ID | Location Settings | City Name | Longitude | Latitude
+        Cursor c = db.rawQuery("SELECT * FROM " + WeatherContract.LocationEntry.TABLE_NAME +
+                " WHERE " + WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING + " = " +
+                testLocationSetting, null);
 
-        // Move the cursor to a valid database row
+        // Move the cursor to a valid database row, error if unable to
+        assertTrue("Error: This means that we were unable to query the database for table information",
+                c.moveToFirst());
 
         // Validate data in resulting Cursor with the original ContentValues
-        // (you can use the validateCurrentRecord function in TestUtilities to validate the
-        // query if you like)
+        //Table: [0]ID | [1]Location Settings | [2]City Name | [3]Longitude | [4]Latitude
+        //Log.v(App.getTag(), "ToString: " + c.getColumnName(0) + c.getColumnName(1) + c.getColumnName(2));
+
+        //get index of location
+        int location_index = c.getColumnIndex(WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING);
+
+        //look for the entry we just added to the database
+        do {
+            //not the location index we're looking for => skip to next iteration of loop
+            //Log.v(App.getTag(), "Location: " + c.getString(location_index));
+            if (!c.getString(location_index).equals(testLocationSetting))
+                continue;
+
+            TestUtilities.validateCursor(null, c, testValues);
+            break;
+        } while(c.moveToNext());
 
         // Finally, close the cursor and database
-
+        c.close();
+        db.close();
     }
 
     /*

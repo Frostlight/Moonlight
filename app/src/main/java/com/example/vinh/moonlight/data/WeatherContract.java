@@ -38,6 +38,7 @@ public class WeatherContract {
         Students: This is where you will add the strings.  (Similar to what has been
         done for WeatherEntry)
      */
+    //Table: ID | Location Settings | City Name | Longitude | Latitude
     public static final class LocationEntry implements BaseColumns {
         public static final String TABLE_NAME = "location";
 
