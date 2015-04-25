@@ -149,13 +149,11 @@ public class TestDb extends AndroidTestCase {
                 c.moveToFirst());
 
         // Validate data in resulting Cursor with the original ContentValues
-        //get index of location
-        long location_index = c.getColumnIndex(WeatherContract.WeatherEntry.COLUMN_LOC_KEY);
 
         //The first entry should be the one we added to the database
         //Log.v(App.getTag(), "Location: " + c.getString(location_index));
-        assertTrue("Error: First entry was not equal to entry just inserted",
-                location_index == locationRowId);
+        TestUtilities.validateCurrentRecord("Error: weather entry failed to validate",
+                        c, weatherValues);
         //Log.v(App.getTag(), "locationRowId: " + locationRowId + " location_index: " + location_index);
 
         //c.moveToNext should fail since there is only one entry
@@ -194,13 +192,10 @@ public class TestDb extends AndroidTestCase {
         //Table: [0]ID | [1]Location Settings | [2]City Name | [3]Longitude | [4]Latitude
         //Log.v(App.getTag(), "ToString: " + c.getColumnName(0) + c.getColumnName(1) + c.getColumnName(2));
 
-        //get index of location
-        int location_index = c.getColumnIndex(WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING);
-
         //The first entry should be the one we added to the database
         //Log.v(App.getTag(), "Location: " + c.getString(location_index));
-        assertTrue("Error: First entry was not equal to entry just inserted",
-                c.getString(location_index).equals(testLocationSetting));
+        TestUtilities.validateCurrentRecord("Error: location entry failed to validate",
+                c, testValues);
 
         //c.moveToNext should fail since there is only one entry
         assertTrue("Error: More than one entry in table", !c.moveToNext());

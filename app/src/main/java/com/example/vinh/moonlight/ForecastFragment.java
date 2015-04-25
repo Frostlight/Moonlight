@@ -215,7 +215,7 @@ public class ForecastFragment extends Fragment {
                 //Get unit preference from settings
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
                 String units = prefs.getString(getString(R.string.pref_unit_key),
-                        getString(R.string.pref_unit_default));
+                        getString(R.string.pref_unit_metric));
 
 
                 double high = temperatureObject.getDouble(OWM_MAX);
@@ -227,7 +227,7 @@ public class ForecastFragment extends Fragment {
                 //Log.v(App.getTag(), getResources().getStringArray(R.array.unit_values)[1]); //fahrenheit
 
                 //if units settings is fahrenheit, need to convert high and low accordingly
-                if (units.compareTo(getResources().getStringArray(R.array.unit_values)[1]) == 0) {
+                if (units.compareTo(getResources().getString(R.string.pref_unit_imperial)) == 0) {
                     high = 9*high/5 + 32;
                     low = 9*low/5 + 32;
                 }
