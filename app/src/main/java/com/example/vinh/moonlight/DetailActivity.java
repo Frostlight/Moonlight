@@ -3,7 +3,9 @@ package com.example.vinh.moonlight;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.ShareActionProvider;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,7 +31,23 @@ public class DetailActivity extends ActionBarActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_detail, menu);
-        return true;
+
+        //Share action button
+        // Get the menu item.
+        MenuItem menuItem = menu.findItem(R.id.share);
+
+        //Set the provider for sharing.
+        ShareActionProvider mShareActionProvider = new ShareActionProvider(this);
+        MenuItemCompat.setActionProvider(menuItem, mShareActionProvider);
+        //Log.v(App.getTag(), "Share action provider: " + mShareActionProvider.toString());
+
+        //Since we already have the data to share, just set the ShareActionProvider to the weather text
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, this.getIntent().getStringExtra(Intent.EXTRA_TEXT) + " #MoonlightApp");
+        mShareActionProvider.setShareIntent(shareIntent);
+
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -37,17 +55,21 @@ public class DetailActivity extends ActionBarActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            //Explicit intent to start settings
-            Intent settings = new Intent(this, SettingsActivity.class);
-            startActivity(settings);
-            return true;
-        }
 
-        return super.onOptionsItemSelected(item);
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                //Explicit intent to start settings
+                Intent settings = new Intent(this, SettingsActivity.class);
+                startActivity(settings);
+                return true;
+            case R.id.share:
+                //share button already handled in onCreateOptionsMenu()
+                //do nothing
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     /**
