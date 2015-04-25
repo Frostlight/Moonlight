@@ -38,6 +38,8 @@ public class WeatherDbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
+        //Table: ID | Location Settings(KEY) | Date | Short Description | Weather ID | Min Temp |
+        //Max Temp | Humidity | Pressure | Wind Speed | Degrees
         final String SQL_CREATE_WEATHER_TABLE = "CREATE TABLE " + WeatherEntry.TABLE_NAME + " (" +
                 // Why AutoIncrement here, and not above?
                 // Unique keys will be auto-generated in either case.  But for weather
