@@ -109,28 +109,24 @@ public class WeatherProvider extends ContentProvider {
     }
 
     /*
-        Students: Here is where you need to create the UriMatcher. This UriMatcher will
-        match each URI to the WEATHER, WEATHER_WITH_LOCATION, WEATHER_WITH_LOCATION_AND_DATE,
-        and LOCATION integer constants defined above.  You can test this by uncommenting the
-        testUriMatcher test within TestUriMatcher.
+        This UriMatcher will match each URI to the WEATHER, WEATHER_WITH_LOCATION,
+        WEATHER_WITH_LOCATION_AND_DATE, and LOCATION integer constants defined above.
      */
     static UriMatcher buildUriMatcher() {
-        // 1) The code passed into the constructor represents the code to return for the root
-        // URI.  It's common to use NO_MATCH as the code for this case. Add the constructor below.
+        final UriMatcher sURIMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+        final String authority = WeatherContract.CONTENT_AUTHORITY;
 
+        //Corresponding code for each URI we add
+        sURIMatcher.addURI(authority, WeatherContract.PATH_WEATHER, WEATHER);
+        sURIMatcher.addURI(authority, WeatherContract.PATH_WEATHER + "/*", WEATHER_WITH_LOCATION);
+        sURIMatcher.addURI(authority, WeatherContract.PATH_WEATHER + "/*/#", WEATHER_WITH_LOCATION_AND_DATE);
 
-        // 2) Use the addURI function to match each of the types.  Use the constants from
-        // WeatherContract to help define the types to the UriMatcher.
+        sURIMatcher.addURI(authority, WeatherContract.PATH_LOCATION, LOCATION);
 
-
-        // 3) Return the new matcher!
-        return null;
+        //Return the new matcher
+        return sURIMatcher;
     }
 
-    /*
-        Students: We've coded this for you.  We just create a new WeatherDbHelper for later use
-        here.
-     */
     @Override
     public boolean onCreate() {
         mOpenHelper = new WeatherDbHelper(getContext());
