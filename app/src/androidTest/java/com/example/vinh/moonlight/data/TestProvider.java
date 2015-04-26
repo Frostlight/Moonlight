@@ -22,12 +22,13 @@ import android.content.pm.ProviderInfo;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.test.AndroidTestCase;
+import android.util.Log;
 
 import com.example.vinh.moonlight.data.WeatherContract.LocationEntry;
 import com.example.vinh.moonlight.data.WeatherContract.WeatherEntry;
 
 /*
-    Note: This is not a complete set of tests of the Sunshine ContentProvider, but it does test
+    Note: This is not a complete set of tests of the ContentProvider, but it does test
     that at least the basic functionality has been implemented correctly.
 
     Students: Uncomment the tests in this class as you implement the functionality in your
@@ -120,6 +121,8 @@ public class TestProvider extends AndroidTestCase {
         // WeatherProvider class.
         ComponentName componentName = new ComponentName(mContext.getPackageName(),
                 WeatherProvider.class.getName());
+        Log.v(App.getTag(), "mContext.getPackageName() = " + mContext.getPackageName() +
+            " WeatherProvider.class.getName() = " + WeatherProvider.class.getName());
         try {
             // Fetch the provider info using the component name from the PackageManager
             // This throws an exception if the provider isn't registered.
@@ -131,6 +134,7 @@ public class TestProvider extends AndroidTestCase {
                     providerInfo.authority, WeatherContract.CONTENT_AUTHORITY);
         } catch (PackageManager.NameNotFoundException e) {
             // I guess the provider isn't registered correctly.
+            //Log.v(App.getTag(), "Package Name: " + mContext.getPackageName());
             assertTrue("Error: WeatherProvider not registered at " + mContext.getPackageName(),
                     false);
         }

@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.vinh.moonlight" >
 
-    <!-- Necessary for sunshine to perform network access -->
+    <!-- Necessary for moonlight to perform network access -->
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -35,10 +35,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.vinh.moonlight.MainActivity" />
         </activity>
+        <provider
+            android:authorities="com.example.vinh.moonlight"
+            android:name=".data.WeatherProvider"/>
     </application>
-
-    <provider
-        android:authorities="com.example.vinh.moonlight"
-        android:name=".data.WeatherProvider"/>
-
 </manifest>
