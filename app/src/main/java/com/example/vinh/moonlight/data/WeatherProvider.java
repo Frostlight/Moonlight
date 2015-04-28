@@ -245,17 +245,18 @@ public class WeatherProvider extends ContentProvider {
         // Start by getting a writable database
         final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
         final int match = sUriMatcher.match(uri);
-        Uri returnUri;
 
         // Use the uriMatcher to match the WEATHER and LOCATION URI's we are going to
         // handle.  If it doesn't match these, throw an UnsupportedOperationException.
         int del_count = 0;
         switch (match) {
             case WEATHER:
-                del_count = db.delete(WeatherContract.WeatherEntry.TABLE_NAME, selection, selectionArgs);
+                del_count = db.delete(WeatherContract.WeatherEntry.TABLE_NAME, selection,
+                        selectionArgs);
                 break;
             case LOCATION:
-                del_count = db.delete(WeatherContract.LocationEntry.TABLE_NAME, selection, selectionArgs);
+                del_count = db.delete(WeatherContract.LocationEntry.TABLE_NAME, selection,
+                        selectionArgs);
                 break;
             default:
                 throw new UnsupportedOperationException("Failed delete with uri: " + uri);
@@ -273,16 +274,40 @@ public class WeatherProvider extends ContentProvider {
         // normalize the date value
         if (values.containsKey(WeatherContract.WeatherEntry.COLUMN_DATE)) {
             long dateValue = values.getAsLong(WeatherContract.WeatherEntry.COLUMN_DATE);
-            values.put(WeatherContract.WeatherEntry.COLUMN_DATE, WeatherContract.normalizeDate(dateValue));
+            values.put(WeatherContract.WeatherEntry.COLUMN_DATE,
+                    WeatherContract.normalizeDate(dateValue));
         }
     }
 
     @Override
     public int update(
             Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        // Student: This is a lot like the delete function.  We return the number of rows impacted
-        // by the update.
-        return 0;
+        // Start by getting a writable database
+        final SQLiteDatabase db = mOpenHelper.getWritableDatabase();
+        final int match = sUriMatcher.match(uri);
+
+        // Use the uriMatcher to match the WEATHER and LOCATION URI's we are going to
+        // handle.  If it doesn't match these, throw an UnsupportedOperationException.
+        int update_count = 0;
+        switch (match) {
+            case WEATHER:
+                update_count = db.update(WeatherContract.WeatherEntry.TABLE_NAME, values,
+                        selection, selectionArgs);
+                break;
+            case LOCATION:
+                update_count = db.update(WeatherContract.LocationEntry.TABLE_NAME, values,
+                        selection, selectionArgs);
+                break;
+            default:
+                throw new UnsupportedOperationException("Failed delete with uri: " + uri);
+        }
+
+        //if rows were update, notify content observers
+        if (update_count > 0)
+            getContext().getContentResolver().notifyChange(uri, null);
+
+        //return the number of rows updated
+        return update_count;
     }
 
     @Override
