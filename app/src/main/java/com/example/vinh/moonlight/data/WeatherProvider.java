@@ -291,6 +291,7 @@ public class WeatherProvider extends ContentProvider {
         int update_count = 0;
         switch (match) {
             case WEATHER:
+                normalizeDate(values);
                 update_count = db.update(WeatherContract.WeatherEntry.TABLE_NAME, values,
                         selection, selectionArgs);
                 break;
