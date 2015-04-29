@@ -15,9 +15,12 @@
  */
 package com.example.vinh.moonlight;
 
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
@@ -25,6 +28,7 @@ import android.text.format.Time;
 import android.util.Log;
 import android.widget.ArrayAdapter;
 
+import com.example.vinh.moonlight.data.WeatherContract;
 import com.example.vinh.moonlight.data.WeatherContract.WeatherEntry;
 
 import org.json.JSONArray;
@@ -106,14 +110,45 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
      * @return the row ID of the added location.
      */
     long addLocation(String locationSetting, String cityName, double lat, double lon) {
-        // Students: First, check if the location with this city name exists in the db
+        long location_id;
+
+        // Check if the location with this city name exists in the db
+        Cursor locationCursor = mContext.getContentResolver().query(
+            WeatherContract.LocationEntry.CONTENT_URI,
+            new String[]{WeatherContract.LocationEntry._ID},
+            WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING + " = ?",
+            new String[]{locationSetting},
+            null
+        );
+
         // If it exists, return the current ID
+        if (locationCursor.moveToFirst())
+        {
+            int location_id_index = locationCursor.getColumnIndex(WeatherContract.LocationEntry._ID);
+            location_id = locationCursor.getLong(location_id_index);
+        }
         // Otherwise, insert it using the content resolver and the base URI
-        return -1;
+        else {
+            //create new ContentValues and fill with information to store into DB
+            ContentValues locationValues = new ContentValues();
+            locationValues.put(WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING, locationSetting);
+            locationValues.put(WeatherContract.LocationEntry.COLUMN_CITY_NAME, cityName);
+            locationValues.put(WeatherContract.LocationEntry.COLUMN_COORD_LAT, lat);
+            locationValues.put(WeatherContract.LocationEntry.COLUMN_COORD_LONG, lon);
+
+            //this inserts and returns the URI of the newly inserted item
+            Uri insert_uri = mContext.getContentResolver().insert(
+                WeatherContract.LocationEntry.CONTENT_URI, locationValues);
+            //Log.v(App.getTag(), "Uri insertion = " + insert_uri.toString());
+
+            //parse the ID from new LocationEntry URI
+            location_id = ContentUris.parseId(insert_uri);
+        }
+        return location_id;
     }
 
     /*
-        Students: This code will allow the FetchWeatherTask to continue to return the strings that
+        This code will allow the FetchWeatherTask to continue to return the strings that
         the UX expects so that we can continue to test the application even once we begin using
         the database.
      */
@@ -265,7 +300,9 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
 
             // add to database
             if ( cVVector.size() > 0 ) {
-                // Student: call bulkInsert to add the weatherEntries to the database here
+                // call bulkInsert to add the weatherEntries to the database
+                mContext.getContentResolver().bulkInsert(WeatherEntry.CONTENT_URI,
+                        (ContentValues[]) cVVector.toArray());
             }
 
             // Sort order:  Ascending, by date.
@@ -273,19 +310,18 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
             Uri weatherForLocationUri = WeatherEntry.buildWeatherLocationWithStartDate(
                     locationSetting, System.currentTimeMillis());
 
-            //Uncomment the next lines to display what what you stored in the bulkInsert
+            //Display what was stored in the bulkInsert
+            Cursor cur = mContext.getContentResolver().query(weatherForLocationUri,
+                    null, null, null, sortOrder);
 
-//            Cursor cur = mContext.getContentResolver().query(weatherForLocationUri,
-//                    null, null, null, sortOrder);
-//
-//            cVVector = new Vector<ContentValues>(cur.getCount());
-//            if ( cur.moveToFirst() ) {
-//                do {
-//                    ContentValues cv = new ContentValues();
-//                    DatabaseUtils.cursorRowToContentValues(cur, cv);
-//                    cVVector.add(cv);
-//                } while (cur.moveToNext());
-//            }
+            cVVector = new Vector<ContentValues>(cur.getCount());
+            if ( cur.moveToFirst() ) {
+                do {
+                    ContentValues cv = new ContentValues();
+                    DatabaseUtils.cursorRowToContentValues(cur, cv);
+                    cVVector.add(cv);
+                } while (cur.moveToNext());
+            }
 
             Log.d(LOG_TAG, "FetchWeatherTask Complete. " + cVVector.size() + " Inserted");
 
@@ -325,13 +361,21 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
             // Possible parameters are avaiable at OWM's forecast API page, at
             // http://openweathermap.org/API#forecast
 
-            // TODO: fix API calls
+            //the base url and query names
+            final String BASE_URL = "http://api.openweathermap.org/data/2.5/forecast/daily?";
             final String QUERY_PARAM = "q";
+            final String MODE_PARAM = "mode";
             final String UNITS_PARAM = "units";
+            final String NUM_DAYS_PARAM = "cnt";
 
+            //build the URL using uri builder
+            Uri built_uri = Uri.parse(BASE_URL).buildUpon()
                     .appendQueryParameter(QUERY_PARAM, params[0])
+                    .appendQueryParameter(MODE_PARAM, format)
                     .appendQueryParameter(UNITS_PARAM, units)
+                    .appendQueryParameter(NUM_DAYS_PARAM, Integer.toString(numDays))
                     .build();
+            URL url = new URL(built_uri.toString());
 
             // Create the request to OpenWeatherMap, and open the connection
             urlConnection = (HttpURLConnection) url.openConnection();
