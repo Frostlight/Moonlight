@@ -2,6 +2,8 @@ package com.example.vinh.moonlight;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -15,6 +17,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.example.vinh.moonlight.data.WeatherContract;
+
 import java.util.ArrayList;
 
 /**
@@ -22,7 +26,7 @@ import java.util.ArrayList;
 */
 public class ForecastFragment extends Fragment {
 
-    static ArrayAdapter<String> adapter;
+    private ForecastAdapter mForecastAdapter;
 
     public ForecastFragment() {
     }
@@ -35,7 +39,7 @@ public class ForecastFragment extends Fragment {
         //Log.v(App.getTag(), "Location: "+location);
 
         //Call FetchWeatherTask to update weather
-        new FetchWeatherTask(getActivity(), adapter).execute(location);
+        new FetchWeatherTask(getActivity()).execute(location);
         super.onStart();
     }
 
@@ -77,38 +81,30 @@ public class ForecastFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        String locationSetting = Utility.getPreferredLocation(getActivity());
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
-        adapter = new ArrayAdapter<>(getActivity(),
-                R.layout.list_item_forecast, R.id.list_item_forecast_textview, new ArrayList<String>());
+        //sort order: ascending by date
+        String sortOrder = WeatherContract.WeatherEntry.COLUMN_DATE + " ASC";
+        Uri weatherForLocationUri = WeatherContract.WeatherEntry.buildWeatherLocationWithStartDate(
+                locationSetting, System.currentTimeMillis());
+
+        Cursor cur = getActivity().getContentResolver().query(weatherForLocationUri,
+                null, null, null, sortOrder);
+
+        // The CursorAdapter will take data from our cursor and populate the ListView
+        // However, we cannot use FLAG_AUTO_REQUERY since it is deprecated, so we will end
+        // up with an empty list the first time we run.
+        mForecastAdapter = new ForecastAdapter(getActivity(), cur, 0);
 
         ListView listView = (ListView) rootView.findViewById(R.id.listview_forecast);
-
-        try {
-            listView.setAdapter(adapter);
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-                    //show a toast with the weather information
-                    @Override
-                    public void onItemClick(AdapterView<?> AdapterView, View view, int i, long l)
-                    {
-                        //Legacy toast, launches detail activity instead
-                        /*CharSequence text = AdapterView.getItemAtPosition(i).toString();
-                        int duration = Toast.LENGTH_SHORT;
-                        Toast toast = Toast.makeText(view.getContext(), text, duration);
-                        toast.show();*/
-
-                        //Explicit intent to start DetailActivity with the weather information
-                        Intent details = new Intent(view.getContext(), DetailActivity.class); //DetailActivity.class);
-                        //details.setData(Uri.parse(AdapterView.getItemAtPosition(i).toString()));
-                        details.putExtra(Intent.EXTRA_TEXT, AdapterView.getItemAtPosition(i).toString());
-                        startActivity(details);
-                    }
-                }
-            );
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+        listView.setAdapter(mForecastAdapter);
         return rootView;
+    }
+
+    private void updateWeather() {
+       FetchWeatherTask weatherTask = new FetchWeatherTask(getActivity());
+       String location = Utility.getPreferredLocation(getActivity());
+       weatherTask.execute(location);
     }
 }
