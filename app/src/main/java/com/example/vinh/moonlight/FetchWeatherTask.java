@@ -302,7 +302,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
             if ( cVVector.size() > 0 ) {
                 // call bulkInsert to add the weatherEntries to the database
                 mContext.getContentResolver().bulkInsert(WeatherEntry.CONTENT_URI,
-                        (ContentValues[]) cVVector.toArray());
+                        cVVector.toArray(new ContentValues[cVVector.size()]));
             }
 
             // Sort order:  Ascending, by date.
