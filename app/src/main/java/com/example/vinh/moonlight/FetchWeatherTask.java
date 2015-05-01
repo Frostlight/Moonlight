@@ -266,11 +266,11 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
 
         String format = "json";
         String units = "metric";
-        int numDays = 7;
+        int numDays = 14;
 
         try {
             // Construct the URL for the OpenWeatherMap query
-            // Possible parameters are avaiable at OWM's forecast API page, at
+            // Possible parameters are available at OWM's forecast API page, at
             // http://openweathermap.org/API#forecast
 
             //the base url and query names
