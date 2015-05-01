@@ -15,11 +15,6 @@ import com.example.vinh.moonlight.utils.PollingCheck;
 import java.util.Map;
 import java.util.Set;
 
-/*
-    Students: These are functions and some test data to make it easier to test your database and
-    Content Provider.  Note that you'll want your WeatherContract class to exactly match the one
-    in our solution to use these as-given.
- */
 public class TestUtilities extends AndroidTestCase {
     static final String TEST_LOCATION = "99705";
     static final long TEST_DATE = 1419033600L;  // December 20th, 2014
@@ -44,7 +39,7 @@ public class TestUtilities extends AndroidTestCase {
     }
 
     /*
-        Students: Use this to create some default weather values for your database tests.
+        Use this to create some default weather values for your database tests.
      */
     static ContentValues createWeatherValues(long locationRowId) {
         ContentValues weatherValues = new ContentValues();
@@ -62,10 +57,6 @@ public class TestUtilities extends AndroidTestCase {
         return weatherValues;
     }
 
-    /*
-        Students: You can uncomment this helper function once you have finished creating the
-        LocationEntry part of the WeatherContract.
-     */
     static ContentValues createNorthPoleLocationValues() {
         // Create a new map of values, where column names are the keys
         ContentValues testValues = new ContentValues();
@@ -77,10 +68,6 @@ public class TestUtilities extends AndroidTestCase {
         return testValues;
     }
 
-    /*
-        Students: You can uncomment this function once you have finished creating the
-        LocationEntry part of the WeatherContract as well as the WeatherDbHelper.
-     */
     static long insertNorthPoleLocationValues(Context context) {
         // insert our test records into the database
         WeatherDbHelper dbHelper = new WeatherDbHelper(context);
@@ -96,14 +83,6 @@ public class TestUtilities extends AndroidTestCase {
         return locationRowId;
     }
 
-    /*
-        Students: The functions we provide inside of TestProvider use this utility class to test
-        the ContentObserver callbacks using the PollingCheck class that we grabbed from the Android
-        CTS tests.
-
-        Note that this only tests that the onChange function is called; it does not test that the
-        correct Uri is returned.
-     */
     static class TestContentObserver extends ContentObserver {
         final HandlerThread mHT;
         boolean mContentChanged;

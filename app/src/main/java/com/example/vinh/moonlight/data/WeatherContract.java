@@ -55,8 +55,6 @@ public class WeatherContract {
 
     /*
         Inner class that defines the table contents of the location table
-        Students: This is where you will add the strings.  (Similar to what has been
-        done for WeatherEntry)
      */
     //Table: ID | Location Settings | City Name | Longitude | Latitude
     public static final class LocationEntry implements BaseColumns {
@@ -98,9 +96,6 @@ public class WeatherContract {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
 
-        /*
-            Student: Fill in this buildWeatherLocation function
-         */
         public static Uri buildWeatherLocation(String locationSetting) {
             return CONTENT_URI.buildUpon().appendPath(locationSetting).build();
         }
