@@ -22,7 +22,6 @@ import android.widget.TextView;
 import android.util.Log;
 
 import com.example.vinh.moonlight.data.WeatherContract;
-import com.example.vinh.moonlight.data.WeatherContract.WeatherEntry;
 
 
 public class DetailActivity extends ActionBarActivity  {
@@ -41,22 +40,6 @@ public class DetailActivity extends ActionBarActivity  {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_detail, menu);
-
-        //Share action button
-        // Get the menu item.
-        //MenuItem menuItem = menu.findItem(R.id.share);
-
-        //Set the provider for sharing.
-        //mShareActionProvider = new ShareActionProvider(this);
-        //MenuItemCompat.setActionProvider(menuItem, mShareActionProvider);
-        //Log.v(App.getTag(), "Share action provider: " + mShareActionProvider.toString());
-
-//        //Since we already have the data to share, just set the ShareActionProvider to the weather text
-//        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-//        shareIntent.setType("text/plain");
-//        shareIntent.putExtra(Intent.EXTRA_TEXT, this.getIntent().getStringExtra(Intent.EXTRA_TEXT) + " #MoonlightApp");
-//        mShareActionProvider.setShareIntent(shareIntent);
-
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -128,13 +111,9 @@ public class DetailActivity extends ActionBarActivity  {
             // Inflate the menu; this adds items to the action bar if it is present.
             inflater.inflate(R.menu.menu_detailfragment, menu);
 
-            //Share action button
-            // Get the menu item.
+            //Get the action provider for the share menu button, so we can set the share intent
+            //later (using cursorLoader)
             MenuItem menuItem = menu.findItem(R.id.share);
-
-            //Set the provider for sharing.
-            //mShareActionProvider = new ShareActionProvider(getActivity());
-            //MenuItemCompat.setActionProvider(menuItem, mShareActionProvider);
             mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
             super.onCreateOptionsMenu(menu, inflater);
         }
@@ -154,15 +133,12 @@ public class DetailActivity extends ActionBarActivity  {
             Uri weatherUri = Uri.parse(forecastStr);
             //Log.v(App.getTag(), "weatherUri: " + weatherUri.toString());
 
-            //sort order: ascending by date
-            String sortOrder = WeatherEntry.COLUMN_DATE + " ASC";
-
             return new CursorLoader(getActivity(),
                 weatherUri,
                 FORECAST_COLUMNS,
                 null,
                 null,
-                sortOrder);
+                null);
         }
 
         @Override
@@ -199,6 +175,7 @@ public class DetailActivity extends ActionBarActivity  {
             }
         }
 
+        //Empty because no data is held that needs to be cleaned up
         @Override
         public void onLoaderReset(Loader<Cursor> loader) {}
     }
