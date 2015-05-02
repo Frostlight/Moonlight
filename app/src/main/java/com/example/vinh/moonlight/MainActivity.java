@@ -10,17 +10,37 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 public class MainActivity extends ActionBarActivity {
+    public String mLocation;
+    private final String FORECASTFRAGMENT_TAG = "forecastfragment";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new ForecastFragment())
+                    .add(R.id.container, new ForecastFragment(), FORECASTFRAGMENT_TAG)
                     .commit();
         }
+        mLocation = Utility.getPreferredLocation(this);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        //If current location is not the same as in settings, update to new location
+        String pref_location = Utility.getPreferredLocation(getApplicationContext());
+        if (!pref_location.equals(mLocation))
+        {
+            ForecastFragment ff = (ForecastFragment)getSupportFragmentManager().
+                    findFragmentByTag(FORECASTFRAGMENT_TAG);
+
+            //updates weather and restarts the loader
+            ff.onLocationChanged();
+            mLocation = pref_location;
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

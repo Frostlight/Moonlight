@@ -74,11 +74,13 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         setHasOptionsMenu(true);
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        updateWeather();
-    }
+    //Removed to save on excess weather fetching, use refresh button for now
+    //TODO: more efficient weather fetching
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//        updateWeather();
+//    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
@@ -142,6 +144,12 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
        weatherTask.execute(location);
        //Log.v(App.getTag(), "Updating weather.");
        super.onStart();
+    }
+
+    public void onLocationChanged()
+    {
+        updateWeather();
+        getLoaderManager().restartLoader(FORECAST_LOADER, null, this);
     }
 
     @Override

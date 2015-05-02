@@ -96,18 +96,19 @@ public class DetailActivity extends ActionBarActivity  {
 
         @Override
         public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-            getLoaderManager().initLoader(DETAIL_LOADER, null, this);
             super.onActivityCreated(savedInstanceState);
+            getLoaderManager().initLoader(DETAIL_LOADER, null, this);
         }
 
         @Override
         public void onCreate(Bundle savedInstanceState) {
-            setHasOptionsMenu(true);
             super.onCreate(savedInstanceState);
+            setHasOptionsMenu(true);
         }
 
         @Override
         public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+            super.onCreateOptionsMenu(menu, inflater);
             // Inflate the menu; this adds items to the action bar if it is present.
             inflater.inflate(R.menu.menu_detailfragment, menu);
 
@@ -115,7 +116,6 @@ public class DetailActivity extends ActionBarActivity  {
             //later (using cursorLoader)
             MenuItem menuItem = menu.findItem(R.id.share);
             mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
-            super.onCreateOptionsMenu(menu, inflater);
         }
 
         @Override
@@ -179,9 +179,4 @@ public class DetailActivity extends ActionBarActivity  {
         @Override
         public void onLoaderReset(Loader<Cursor> loader) {}
     }
-
-
-
-
-
 }
