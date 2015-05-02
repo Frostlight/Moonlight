@@ -14,6 +14,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.ShareActionProvider;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,7 +26,6 @@ import com.example.vinh.moonlight.data.WeatherContract.WeatherEntry;
 
 
 public class DetailActivity extends ActionBarActivity  {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,18 +44,18 @@ public class DetailActivity extends ActionBarActivity  {
 
         //Share action button
         // Get the menu item.
-        MenuItem menuItem = menu.findItem(R.id.share);
+        //MenuItem menuItem = menu.findItem(R.id.share);
 
         //Set the provider for sharing.
-        ShareActionProvider mShareActionProvider = new ShareActionProvider(this);
-        MenuItemCompat.setActionProvider(menuItem, mShareActionProvider);
+        //mShareActionProvider = new ShareActionProvider(this);
+        //MenuItemCompat.setActionProvider(menuItem, mShareActionProvider);
         //Log.v(App.getTag(), "Share action provider: " + mShareActionProvider.toString());
 
-        //Since we already have the data to share, just set the ShareActionProvider to the weather text
-        Intent shareIntent = new Intent(Intent.ACTION_SEND);
-        shareIntent.setType("text/plain");
-        shareIntent.putExtra(Intent.EXTRA_TEXT, this.getIntent().getStringExtra(Intent.EXTRA_TEXT) + " #MoonlightApp");
-        mShareActionProvider.setShareIntent(shareIntent);
+//        //Since we already have the data to share, just set the ShareActionProvider to the weather text
+//        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+//        shareIntent.setType("text/plain");
+//        shareIntent.putExtra(Intent.EXTRA_TEXT, this.getIntent().getStringExtra(Intent.EXTRA_TEXT) + " #MoonlightApp");
+//        mShareActionProvider.setShareIntent(shareIntent);
 
         return super.onCreateOptionsMenu(menu);
     }
@@ -73,10 +73,6 @@ public class DetailActivity extends ActionBarActivity  {
                 Intent settings = new Intent(this, SettingsActivity.class);
                 startActivity(settings);
                 return true;
-            case R.id.share:
-                //share button already handled in onCreateOptionsMenu()
-                //do nothing
-                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -87,6 +83,9 @@ public class DetailActivity extends ActionBarActivity  {
      */
     public static class DetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
         public static int DETAIL_LOADER = 0;
+        private ShareActionProvider mShareActionProvider;
+        public String forecastStr;
+
         private static final String[] FORECAST_COLUMNS = {
                 // In this case the id needs to be fully qualified with a table name, since
                 // the content provider joins the location & weather tables in the background
@@ -99,10 +98,6 @@ public class DetailActivity extends ActionBarActivity  {
                 WeatherContract.WeatherEntry.COLUMN_SHORT_DESC,
                 WeatherContract.WeatherEntry.COLUMN_MAX_TEMP,
                 WeatherContract.WeatherEntry.COLUMN_MIN_TEMP
-                //WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING,
-                //WeatherContract.WeatherEntry.COLUMN_WEATHER_ID,
-                //WeatherContract.LocationEntry.COLUMN_COORD_LAT,
-                //WeatherContract.LocationEntry.COLUMN_COORD_LONG
         };
 
         // These indices are tied to FORECAST_COLUMNS.  If FORECAST_COLUMNS changes, these
@@ -112,8 +107,6 @@ public class DetailActivity extends ActionBarActivity  {
         static final int COL_WEATHER_DESC = 2;
         static final int COL_WEATHER_MAX_TEMP = 3;
         static final int COL_WEATHER_MIN_TEMP = 4;
-
-        public String forecastStr;
 
         public DetailFragment() {
         }
@@ -125,15 +118,34 @@ public class DetailActivity extends ActionBarActivity  {
         }
 
         @Override
+        public void onCreate(Bundle savedInstanceState) {
+            setHasOptionsMenu(true);
+            super.onCreate(savedInstanceState);
+        }
+
+        @Override
+        public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+            // Inflate the menu; this adds items to the action bar if it is present.
+            inflater.inflate(R.menu.menu_detailfragment, menu);
+
+            //Share action button
+            // Get the menu item.
+            MenuItem menuItem = menu.findItem(R.id.share);
+
+            //Set the provider for sharing.
+            //mShareActionProvider = new ShareActionProvider(getActivity());
+            //MenuItemCompat.setActionProvider(menuItem, mShareActionProvider);
+            mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
+            super.onCreateOptionsMenu(menu, inflater);
+        }
+
+        @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
             Intent intent = getActivity().getIntent();
             if (intent != null)
-            {
-                forecastStr = intent.getDataString();
-                ((TextView) rootView.findViewById(R.id.detail_text)).setText(forecastStr);
-            }
+                forecastStr = getActivity().getIntent().getDataString();
             return rootView;
         }
 
@@ -145,15 +157,7 @@ public class DetailActivity extends ActionBarActivity  {
             //sort order: ascending by date
             String sortOrder = WeatherEntry.COLUMN_DATE + " ASC";
 
-
-//        //Log.v(App.getTag(), "onCreateLoader()");
-//        String locationSetting = Utility.getPreferredLocation(getActivity());
-//        //sort order: ascending by date
-//        String sortOrder = WeatherContract.WeatherEntry.COLUMN_DATE + " ASC";
-//        Uri weatherForLocationUri = WeatherContract.WeatherEntry.buildWeatherLocationWithStartDate(
-//                locationSetting, System.currentTimeMillis());
-//
-        return new CursorLoader(getActivity(),
+            return new CursorLoader(getActivity(),
                 weatherUri,
                 FORECAST_COLUMNS,
                 null,
@@ -164,7 +168,7 @@ public class DetailActivity extends ActionBarActivity  {
         @Override
         public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
             //Regenerate the detail output by using data from the cursor
-            //Display it on the textview
+            //Display it on the TextView
             if (data.moveToFirst()) {
                 String date = Utility.formatDate(data.getLong(COL_WEATHER_DATE));
                 //Log.v(App.getTag(), "Date: " + date);
@@ -181,8 +185,17 @@ public class DetailActivity extends ActionBarActivity  {
                 String display_string = date + " - " + desc + " - " + max_temp + "/" + min_temp;
                 //Log.v(App.getTag(), "Display string: " + display_string);
 
+                //Set the text to display on the DetailView
                 TextView detailView = (TextView) getView().findViewById(R.id.detail_text);
                 detailView.setText(display_string);
+
+                //Also set the ShareActionProvider to the same text
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("text/plain");
+                shareIntent.putExtra(Intent.EXTRA_TEXT, display_string + " #MoonlightApp");
+
+                if (mShareActionProvider != null)
+                    mShareActionProvider.setShareIntent(shareIntent);
             }
         }
 
