@@ -38,6 +38,8 @@
         </activity>
         <provider
             android:authorities="com.example.vinh.moonlight"
-            android:name=".data.WeatherProvider"/>
+            android:name=".data.WeatherProvider"
+            android:enabled="true"
+            android:exported="true"/>
     </application>
 </manifest>
