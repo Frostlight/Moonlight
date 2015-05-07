@@ -21,6 +21,35 @@ public class ForecastAdapter extends CursorAdapter {
         super(context, c, flags);
     }
 
+    private static final int VIEW_TYPE_TODAY = 0;
+    private static final int VIEW_TYPE_FUTURE_DAY = 1;
+    private static final int VIEW_TYPE_COUNT = 2;
+
+    @Override
+    public int getItemViewType(int position) {
+        return position == 0 ? VIEW_TYPE_TODAY : VIEW_TYPE_FUTURE_DAY;
+    }
+
+    @Override
+    public int getViewTypeCount() {
+        return VIEW_TYPE_COUNT;
+    }
+
+    /**
+     * Copy/paste note: Replace existing newView() method in ForecastAdapter with this one.
+     */
+    @Override
+    public View newView(Context context, Cursor cursor, ViewGroup parent) {
+        // Choose the layout type
+        int viewType = getItemViewType(cursor.getPosition());
+        int layoutId = -1;
+        if (viewType == VIEW_TYPE_TODAY)
+            layoutId = R.layout.list_item_today;
+        else if (viewType == VIEW_TYPE_FUTURE_DAY)
+            layoutId = R.layout.list_item_forecast;
+        return LayoutInflater.from(context).inflate(layoutId, parent, false);
+    }
+
     /**
      * Prepare the weather high/lows for presentation.
      */
@@ -45,22 +74,10 @@ public class ForecastAdapter extends CursorAdapter {
     }
 
     /*
-        Remember that these views are reused as needed.
-     */
-    @Override
-    public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        View view = LayoutInflater.from(context).inflate(R.layout.list_item_forecast, parent, false);
-
-        return view;
-    }
-
-    /*
         This is where we fill-in the views with the contents of the cursor.
      */
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        //TODO: assumes a layout of only one textview, should fix
-
         //get Weather ID from cursor
         int weatherID = cursor.getInt(ForecastFragment.COL_WEATHER_ID);
 
