@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="May 7, 2015"
+            android:text="@string/default_day"
             android:paddingBottom="7.5dp"
             android:id="@+id/list_item_date_textview" />
         <TextView
@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="26°C"
+            android:text="@string/default_temp_high"
             android:id="@+id/list_item_high_textview"
             android:padding="2.5dp" />
         <TextView
@@ -39,7 +39,7 @@
             android:padding="2.5dp"
             android:gravity="center"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="15°C"
+            android:text="@string/default_temp_low"
             android:id="@+id/list_item_low_textview" />
     </LinearLayout>
 
@@ -53,18 +53,18 @@
         <ImageView
             android:id="@+id/list_item_icon"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:src="@drawable/ic_launcher"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:contentDescription="weather_icon"/>
+            android:contentDescription="@string/image_forecast"/>
         <TextView
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:gravity="center"
-            android:text="Clear"
+            android:text="@string/default_weather"
             android:id="@+id/list_item_forecast_textview" />
     </LinearLayout>
 </LinearLayout>

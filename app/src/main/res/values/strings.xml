@@ -4,8 +4,14 @@
     <string name="hello_world">Hello World</string>
     <string name="list_item">Dummy List Item</string>
 
-    <!-- Images -->
+    <!-- Default View Values -->
+    <string name="default_day" translatable="false">January 1, 2000</string>
+    <string name="default_temp_high" translatable="false">20</string>
+    <string name="default_temp_low" translatable="false">10</string>
+    <string name="default_weather" translatable="false">Clear</string>
 
+    <!-- Image desc -->
+    <string name="image_forecast">Forecast Image</string>
 
     <!-- Actions -->
     <string name="action_refresh" translatable="false">Refresh</string>

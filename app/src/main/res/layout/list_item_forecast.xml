@@ -10,7 +10,7 @@
         android:layout_height="match_parent"
         android:src="@drawable/ic_launcher"
         android:clickable="false"
-        android:contentDescription="weather_icon"/>
+        android:contentDescription="@string/image_forecast"/>
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -26,14 +26,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="May 7, 2015"
+            android:text="@string/default_day"
             android:id="@+id/list_item_date_textview" />
         <TextView
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Clear"
+            android:text="@string/default_weather"
             android:id="@+id/list_item_forecast_textview" />
         </LinearLayout>
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"
             android:gravity="end"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="26°C"
+            android:text="@string/default_temp_high"
             android:id="@+id/list_item_high_textview" />
         <TextView
             xmlns:android="http://schemas.android.com/apk/res/android"
@@ -56,7 +56,7 @@
             android:layout_height="wrap_content"
             android:gravity="end"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="15°C"
+            android:text="@string/default_temp_low"
             android:id="@+id/list_item_low_textview" />
     </LinearLayout>
 </LinearLayout>
