@@ -4,6 +4,9 @@
     <string name="hello_world">Hello World</string>
     <string name="list_item">Dummy List Item</string>
 
+    <!-- Images -->
+
+
     <!-- Actions -->
     <string name="action_refresh" translatable="false">Refresh</string>
     <string name="action_settings">Settings</string>

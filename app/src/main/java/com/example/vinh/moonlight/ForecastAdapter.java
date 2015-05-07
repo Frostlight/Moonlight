@@ -61,7 +61,8 @@ public class ForecastAdapter extends CursorAdapter {
         // our view is pretty simple here --- just a text view
         // we'll keep the UI functional with a simple (and slow!) binding.
 
-        TextView tv = (TextView)view;
-        tv.setText(convertCursorRowToUXFormat(cursor));
+        //TODO: assumes a layout of only one textview, should fix
+        //TextView tv = (TextView)view;
+        //tv.setText(convertCursorRowToUXFormat(cursor));
     }
 }
