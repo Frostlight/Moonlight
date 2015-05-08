@@ -154,9 +154,9 @@ public class DetailActivity extends ActionBarActivity  {
 
                 Boolean isMetric = Utility.isMetric(getActivity());
                 String max_temp = Utility.formatTemperature(
-                        data.getDouble(COL_WEATHER_MAX_TEMP), isMetric);
+                        getActivity(), data.getDouble(COL_WEATHER_MAX_TEMP), isMetric);
                 String min_temp = Utility.formatTemperature(
-                        data.getDouble(COL_WEATHER_MIN_TEMP), isMetric);
+                        getActivity(), data.getDouble(COL_WEATHER_MIN_TEMP), isMetric);
 
                 String display_string = date + " - " + desc + " - " + max_temp + "/" + min_temp;
                 //Log.v(App.getTag(), "Display string: " + display_string);
