@@ -64,7 +64,10 @@
     <string name="format_humidity">Humidity: <xliff:g id="humidity">%1.0f</xliff:g>%%</string>
 
     <!-- Wind format in mph -->
-    <string name="format_wind_mph">Wind: <xliff:g id="speed">%1.0f</xliff:g> mph <xliff:g id="direction">%s</xliff:g></string>
+    <string name="format_wind_mph">Wind: <xliff:g id="speed">%1.1f</xliff:g> mph <xliff:g id="direction">%s</xliff:g></string>
+
+    <!-- Wind format in km/h -->
+    <string name="format_wind_kmh">Wind: <xliff:g id="speed">%1.1f</xliff:g> km/h <xliff:g id="direction">%s</xliff:g></string>
 
     <!-- Pressure format -->
     <string name="format_pressure">Pressure: <xliff:g id="pressure">%1.0f</xliff:g> hPa</string>

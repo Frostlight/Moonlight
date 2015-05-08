@@ -163,7 +163,12 @@ public class Utility {
             windDirection = context.getString(R.string.west);
         else if (windDegrees >= 292.5 && windDegrees <= 337.5)
             windDirection = context.getString(R.string.northwest);
-        return context.getString(R.string.format_wind_mph, windSpeed, windDirection);
+
+        //return units in km/h or mph (metric/imperial) depending on user preferences
+        if (isMetric(context))
+            return context.getString(R.string.format_wind_kmh, windSpeed*1.60934, windDirection);
+        else
+            return context.getString(R.string.format_wind_mph, windSpeed, windDirection);
     }
 
     static String formatPressure(Context context, double pressure) {
