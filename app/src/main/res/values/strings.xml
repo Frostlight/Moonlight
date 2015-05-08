@@ -4,6 +4,16 @@
     <string name="hello_world">Hello World</string>
     <string name="list_item">Dummy List Item</string>
 
+    <!-- Directional labels -->
+    <string name="north">N</string>
+    <string name="northeast">NE</string>
+    <string name="east">E</string>
+    <string name="southeast">SE</string>
+    <string name="south">S</string>
+    <string name="southwest">SW</string>
+    <string name="west">W</string>
+    <string name="northwest">NW</string>
+
     <!-- Default View Values -->
     <string name="default_nameday" translatable="false">Today</string>
     <string name="default_day" translatable="false">January 1, 2000</string>
