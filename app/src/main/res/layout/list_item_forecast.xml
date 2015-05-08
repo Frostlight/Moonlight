@@ -8,7 +8,7 @@
         android:id="@+id/list_item_icon"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:src="@drawable/ic_launcher"
+        android:src="@drawable/ic_clear"
         android:clickable="false"
         android:contentDescription="@string/image_forecast"/>
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
