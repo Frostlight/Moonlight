@@ -58,7 +58,8 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             WeatherContract.WeatherEntry.COLUMN_HUMIDITY,
             WeatherContract.WeatherEntry.COLUMN_WIND_SPEED,
             WeatherContract.WeatherEntry.COLUMN_DEGREES,
-            WeatherContract.WeatherEntry.COLUMN_PRESSURE
+            WeatherContract.WeatherEntry.COLUMN_PRESSURE,
+            WeatherContract.WeatherEntry.COLUMN_WEATHER_ID
     };
 
     // These indices are tied to FORECAST_COLUMNS.  If FORECAST_COLUMNS changes, these
@@ -72,8 +73,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     static final int COL_WINDSPEED = 6;
     static final int COL_DEGREES = 7;
     static final int COL_PRESSURE = 8;
-
-
+    static final int COL_WEATHER_CONDITION_ID = 9;
 
     public DetailFragment() {
     }
@@ -153,8 +153,9 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             mHighTempView.setText(max_temp);
             mLowTempView.setText(min_temp);
 
-            //Set weather image
-            mIconView.setImageResource(R.drawable.ic_launcher);
+            //get Weather condition ID from cursor, set weather image using it
+            int weatherID = data.getInt(COL_WEATHER_CONDITION_ID);
+            mIconView.setImageResource(Utility.getArtResourceForWeatherCondition(weatherID));
 
             //Set weather description
             String description = data.getString(COL_WEATHER_DESC);
