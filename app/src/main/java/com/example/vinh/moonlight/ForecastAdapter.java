@@ -47,7 +47,10 @@ public class ForecastAdapter extends CursorAdapter {
             layoutId = R.layout.list_item_today;
         else if (viewType == VIEW_TYPE_FUTURE_DAY)
             layoutId = R.layout.list_item_forecast;
-        return LayoutInflater.from(context).inflate(layoutId, parent, false);
+        View view =  LayoutInflater.from(context).inflate(layoutId, parent, false);
+        ViewHolder viewHolder = new ViewHolder(view);
+        view.setTag(viewHolder);
+        return view;
     }
 
     /**
@@ -79,7 +82,7 @@ public class ForecastAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         //make a ViewHolder for the current view
-        ViewHolder viewHolder = new ViewHolder(view);
+        ViewHolder viewHolder = (ViewHolder) view.getTag();
 
         //get Weather ID from cursor
         int weatherID = cursor.getInt(ForecastFragment.COL_WEATHER_ID);
