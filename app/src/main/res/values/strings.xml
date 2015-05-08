@@ -5,10 +5,14 @@
     <string name="list_item">Dummy List Item</string>
 
     <!-- Default View Values -->
+    <string name="default_nameday" translatable="false">Today</string>
     <string name="default_day" translatable="false">January 1, 2000</string>
     <string name="default_temp_high" translatable="false">20</string>
     <string name="default_temp_low" translatable="false">10</string>
     <string name="default_weather" translatable="false">Clear</string>
+    <string name="default_humidity" translatable="false>">Humidity: 100%</string>
+    <string name="default_wind" translatable="false">Wind: 10 km/h NW</string>
+    <string name="default_pressure" translatable="false">Pressure: 1000 hPa</string>
 
     <!-- Image desc -->
     <string name="image_forecast">Forecast Image</string>

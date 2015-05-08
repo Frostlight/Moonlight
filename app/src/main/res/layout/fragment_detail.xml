@@ -1,14 +1,116 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.example.vinh.moonlight.DetailActivity$PlaceholderFragment">
-
-    <TextView android:text="@string/hello_world"
-        android:layout_width="wrap_content"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingStart="15dp"
+    android:paddingEnd="15dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
+    android:paddingTop="5dp"
+    android:gravity="center_vertical">
+    <!--android:text="@string/list_item"-->
+    <TextView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/default_nameday"
         android:id="@+id/detail_text" />
+    <TextView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/default_day"
+        android:id="@+id/list_item_date_textview" />
 
-</RelativeLayout>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="5dp" >
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="wrap_content"
+            android:layout_height="100dp"
+            android:orientation="vertical"
+            android:paddingStart="15dp"
+            android:paddingEnd="15dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:paddingTop="5dp"
+            android:gravity="center_vertical">
+            <!--android:text="@string/list_item"-->
+            <TextView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/default_temp_high"
+                android:id="@+id/list_item_high_textview"
+                android:padding="2.5dp" />
+            <TextView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:padding="2.5dp"
+                android:gravity="center"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="@string/default_temp_low"
+                android:id="@+id/list_item_low_textview" />
+        </LinearLayout>
+
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center_vertical">
+            <!--android:text="@string/list_item"-->
+            <ImageView
+                android:id="@+id/list_item_icon"
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:src="@drawable/ic_launcher"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:contentDescription="@string/image_forecast"/>
+            <TextView
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:gravity="center"
+                android:text="@string/default_weather"
+                android:id="@+id/list_item_forecast_textview" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <TextView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="15dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/default_humidity"
+        android:id="@+id/list_item_humidity" />
+
+    <TextView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="15dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/default_wind"
+        android:id="@+id/list_item_wind" />
+
+    <TextView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/default_pressure"
+        android:id="@+id/list_item_pressure" />
+</LinearLayout>
