@@ -139,4 +139,34 @@ public class Utility {
         Date date = new Date(dateInMillis);
         return DateFormat.getDateInstance().format(date);
     }
+
+    static String formatHumidity(Context context, double humidity) {
+        return context.getString(R.string.format_humidity, humidity);
+    }
+
+    static String formatWind(Context context, double windSpeed, double windDegrees)
+    {
+        String windDirection = "";
+        if (windDegrees > 337.5 || windDegrees < 22.5)
+            windDirection = "N";
+        else if (windDegrees >= 22.5 && windDegrees <= 67.5)
+            windDirection = "NE";
+        else if (windDegrees > 67.5 && windDegrees < 112.5)
+            windDirection = "E";
+        else if (windDegrees >= 112.5 && windDegrees <= 157.5)
+            windDirection = "SE";
+        else if (windDegrees > 157.5 && windDegrees < 202.5)
+            windDirection = "S";
+        else if (windDegrees >= 202.5 && windDegrees <= 247.5)
+            windDirection = "SW";
+        else if (windDegrees > 247.5 && windDegrees < 292.5)
+            windDirection = "W";
+        else if (windDegrees >= 292.5 && windDegrees <= 337.5)
+            windDirection = "NW";
+        return context.getString(R.string.format_wind_mph, windSpeed, windDirection);
+    }
+
+    static String formatPressure(Context context, double pressure) {
+        return context.getString(R.string.format_pressure, pressure);
+    }
 }

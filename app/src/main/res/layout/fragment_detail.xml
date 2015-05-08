@@ -17,7 +17,7 @@
         android:paddingBottom="10dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/default_nameday"
-        android:id="@+id/detail_text" />
+        android:id="@+id/list_item_dayname_textview" />
     <TextView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -95,7 +95,7 @@
         android:paddingBottom="15dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/default_humidity"
-        android:id="@+id/list_item_humidity" />
+        android:id="@+id/list_item_humidity_textview" />
 
     <TextView
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -104,7 +104,7 @@
         android:paddingBottom="15dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/default_wind"
-        android:id="@+id/list_item_wind" />
+        android:id="@+id/list_item_wind_textview" />
 
     <TextView
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -112,5 +112,5 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="@string/default_pressure"
-        android:id="@+id/list_item_pressure" />
+        android:id="@+id/list_item_pressure_textview" />
 </LinearLayout>
