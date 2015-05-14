@@ -11,17 +11,29 @@ import android.view.MenuItem;
 
 public class MainActivity extends ActionBarActivity {
     public String mLocation;
+    public boolean mTwoPane;
     private final String FORECASTFRAGMENT_TAG = "forecastfragment";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new ForecastFragment(), FORECASTFRAGMENT_TAG)
-                    .commit();
+        if (findViewById(R.id.weather_detail_container) != null)
+        {
+            //Detail container view is only present in large screen layouts
+            //(tablet). if this is true, activity should be in two-pane mode
+            mTwoPane = true;
+
+            //initialize detail fragment with transaction
+            if (savedInstanceState == null)
+            {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.weather_detail_container, new DetailFragment())
+                        .commit();
+            }
         }
+        else
+            mTwoPane = false;
         mLocation = Utility.getPreferredLocation(this);
     }
 
