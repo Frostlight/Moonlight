@@ -122,7 +122,10 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        Uri weatherUri = Uri.parse(getActivity().getIntent().getDataString());
+        Intent intent = getActivity().getIntent();
+        if (intent == null || intent.getData() == null)
+            return null;
+        Uri weatherUri = Uri.parse(intent.getDataString());
         return new CursorLoader(getActivity(),
             weatherUri,
             FORECAST_COLUMNS,
