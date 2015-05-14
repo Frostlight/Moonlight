@@ -6,13 +6,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 public class MainActivity extends ActionBarActivity {
     public String mLocation;
     public boolean mTwoPane;
-    private final String FORECASTFRAGMENT_TAG = "forecastfragment";
+    private final String DETAILFRAGMENT_TAG = "DFTAG";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +21,7 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         if (findViewById(R.id.weather_detail_container) != null)
         {
+            Log.v(App.getTag(), "TWO PANE MODE, onCreate");
             //Detail container view is only present in large screen layouts
             //(tablet). if this is true, activity should be in two-pane mode
             mTwoPane = true;
@@ -46,7 +48,7 @@ public class MainActivity extends ActionBarActivity {
         if (!pref_location.equals(mLocation))
         {
             ForecastFragment ff = (ForecastFragment)getSupportFragmentManager().
-                    findFragmentByTag(FORECASTFRAGMENT_TAG);
+                    findFragmentById(R.id.fragment_forecast);
 
             //updates weather and restarts the loader
             ff.onLocationChanged();
