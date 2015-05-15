@@ -30,6 +30,8 @@ import org.w3c.dom.Text;
  */
 public class DetailFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor>{
     public static int DETAIL_LOADER = 0;
+    static final String DETAIL_URI = "URI";
+    public Uri mUri;
 
     //Member variables: the ShareActionProvider and references to all the fragment's views
     private ShareActionProvider mShareActionProvider;
@@ -105,6 +107,11 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        //get Uri from callback
+        Bundle arguments = getArguments();
+        if (arguments != null)
+            mUri = arguments.getParcelable(DETAIL_URI);
+
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
 
         //Set up references to each view as member variables so we can change them later
@@ -120,18 +127,27 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         return rootView;
     }
 
+    void onLocationChanged( String newLocation ) {
+        // replace the uri, since the location has changed
+        Uri uri = mUri;
+        if (uri != null) {
+            long date = WeatherContract.WeatherEntry.getDateFromUri(uri);
+            Uri updatedUri = WeatherContract.WeatherEntry.buildWeatherLocationWithDate(newLocation, date);
+            mUri = updatedUri;
+            getLoaderManager().restartLoader(DETAIL_LOADER, null, this);
+        }
+    }
+
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        Intent intent = getActivity().getIntent();
-        if (intent == null || intent.getData() == null)
-            return null;
-        Uri weatherUri = Uri.parse(intent.getDataString());
-        return new CursorLoader(getActivity(),
-            weatherUri,
-            FORECAST_COLUMNS,
-            null,
-            null,
-            null);
+        if (mUri != null)
+            return new CursorLoader(getActivity(),
+                    mUri,
+                    FORECAST_COLUMNS,
+                    null,
+                    null,
+                    null);
+        return null;
     }
 
     @Override

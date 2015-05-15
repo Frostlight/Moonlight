@@ -10,10 +10,33 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements ForecastFragment.Callback {
     public String mLocation;
     public boolean mTwoPane;
     private final String DETAILFRAGMENT_TAG = "DFTAG";
+
+    @Override
+    public void onItemSelected(Uri contentUri) {
+        if (mTwoPane) {
+            Log.v(App.getTag(), "TwoPane onItemSelected");
+            // In two-pane mode, show the detail view in this activity by
+            // adding or replacing the detail fragment using a
+            // fragment transaction.
+            Bundle args = new Bundle();
+            args.putParcelable(DetailFragment.DETAIL_URI, contentUri);
+            DetailFragment fragment = new DetailFragment();
+            fragment.setArguments(args);
+
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.weather_detail_container, fragment, DETAILFRAGMENT_TAG)
+                    .commit();
+        } else {
+            Log.v(App.getTag(), "OnePane onItemSelected");
+            Intent intent = new Intent(this, DetailActivity.class)
+                    .setData(contentUri);
+            startActivity(intent);
+       }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,20 +62,38 @@ public class MainActivity extends ActionBarActivity {
         mLocation = Utility.getPreferredLocation(this);
     }
 
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//
+//        //If current location is not the same as in settings, update to new location
+//        String pref_location = Utility.getPreferredLocation(getApplicationContext());
+//        if (!pref_location.equals(mLocation))
+//        {
+//            ForecastFragment ff = (ForecastFragment)getSupportFragmentManager().
+//                    findFragmentById(R.id.fragment_forecast);
+//
+//            //updates weather and restarts the loader
+//            ff.onLocationChanged();
+//            mLocation = pref_location;
+//        }
+//    }
+
     @Override
     protected void onResume() {
         super.onResume();
-
-        //If current location is not the same as in settings, update to new location
-        String pref_location = Utility.getPreferredLocation(getApplicationContext());
-        if (!pref_location.equals(mLocation))
-        {
-            ForecastFragment ff = (ForecastFragment)getSupportFragmentManager().
-                    findFragmentById(R.id.fragment_forecast);
-
-            //updates weather and restarts the loader
-            ff.onLocationChanged();
-            mLocation = pref_location;
+        String location = Utility.getPreferredLocation( this );
+        // update the location in our second pane using the fragment manager
+        if (location != null && !location.equals(mLocation)) {
+            ForecastFragment ff = (ForecastFragment)getSupportFragmentManager().findFragmentById(R.id.fragment_forecast);
+            if ( null != ff ) {
+                ff.onLocationChanged();
+            }
+            DetailFragment df = (DetailFragment)getSupportFragmentManager().findFragmentByTag(DETAILFRAGMENT_TAG);
+            if ( null != df ) {
+                df.onLocationChanged(location);
+            }
+            mLocation = location;
         }
     }
 
