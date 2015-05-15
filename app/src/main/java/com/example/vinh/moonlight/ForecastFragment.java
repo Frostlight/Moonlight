@@ -1,5 +1,6 @@
 package com.example.vinh.moonlight;
 
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
@@ -31,7 +32,11 @@ import java.util.ArrayList;
 * Created by Vincent on 4/13/2015.
 */
 public class ForecastFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+    static final String SCROLL_POSITION = "scrollpos";
     private ForecastAdapter mForecastAdapter;
+    private int mPosition;
+    private ListView mListView;
+
     private static final int FORECAST_LOADER = 0;
     private static final String[] FORECAST_COLUMNS = {
             // In this case the id needs to be fully qualified with a table name, since
@@ -105,15 +110,14 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+                             final Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
         // The CursorAdapter will take data from our cursor and populate the ListView
         mForecastAdapter = new ForecastAdapter(getActivity(), null, 0);
-
-        ListView listView = (ListView) rootView.findViewById(R.id.listview_forecast);
-        listView.setAdapter(mForecastAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mListView = (ListView) rootView.findViewById(R.id.listview_forecast);
+        mListView.setAdapter(mForecastAdapter);
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView adapterView, View view, int position, long l) {
                 // CursorAdapter returns a cursor at the correct position for getItem(), or null
@@ -124,15 +128,25 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
                     ((Callback) getActivity()).
                             onItemSelected(WeatherContract.WeatherEntry.buildWeatherLocationWithDate(
                                     locationSetting, cursor.getLong(COL_WEATHER_DATE)));
-//                    Intent intent = new Intent(getActivity(), DetailActivity.class)
-//                            .setData(WeatherContract.WeatherEntry.buildWeatherLocationWithDate(
-//                                    locationSetting, cursor.getLong(COL_WEATHER_DATE)
-//                            ));
-//                    startActivity(intent);
                 }
+                mPosition = position;
             }
         });
+
+        //get information from instance state if it exists
+        if (savedInstanceState != null && savedInstanceState.containsKey(SCROLL_POSITION))
+            mPosition = savedInstanceState.getInt(SCROLL_POSITION);
         return rootView;
+    }
+
+    //When tablets rotate, save current position
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (mPosition != ListView.INVALID_POSITION)
+        {
+            outState.putInt(SCROLL_POSITION, mPosition);
+        }
     }
 
     @Override
@@ -175,6 +189,8 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         //Log.v(App.getTag(), "onLoadFinished()");
+        if (mPosition != ListView.INVALID_POSITION)
+            mListView.smoothScrollToPosition(mPosition);
         mForecastAdapter.swapCursor(data);
     }
 
