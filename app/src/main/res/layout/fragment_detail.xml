@@ -43,7 +43,6 @@
                 android:paddingRight="15dp"
                 android:paddingTop="5dp"
                 android:gravity="center_vertical">
-                <!--android:text="@string/list_item"-->
                 <TextView
                     xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="fill_parent"
@@ -52,7 +51,6 @@
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:id="@+id/list_item_high_textview"
                     android:padding="2.5dp" />
-                <!--android:text="@string/default_temp_high"-->
                 <TextView
                     xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="fill_parent"
@@ -61,7 +59,6 @@
                     android:gravity="center"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:id="@+id/list_item_low_textview" />
-                <!--android:text="@string/default_temp_low"-->
             </LinearLayout>
 
 
@@ -70,7 +67,6 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:gravity="center_vertical">
-                <!--android:text="@string/list_item"-->
                 <ImageView
                     android:id="@+id/list_item_icon"
                     android:layout_width="fill_parent"
@@ -78,16 +74,13 @@
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:contentDescription="@string/image_forecast"/>
-                <!--android:src="@drawable/art_clear"-->
                 <TextView
                     xmlns:android="http://schemas.android.com/apk/res/android"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:gravity="center"
-
                     android:id="@+id/list_item_forecast_textview" />
-                <!--android:text="@string/default_weather"-->
             </LinearLayout>
         </LinearLayout>
 
@@ -97,7 +90,6 @@
             android:layout_height="wrap_content"
             android:paddingBottom="15dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/default_humidity"
             android:id="@+id/list_item_humidity_textview" />
 
         <TextView
@@ -106,7 +98,6 @@
             android:layout_height="wrap_content"
             android:paddingBottom="15dp"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/default_wind"
             android:id="@+id/list_item_wind_textview" />
 
         <TextView
@@ -114,7 +105,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/default_pressure"
             android:id="@+id/list_item_pressure_textview" />
     </LinearLayout>
 </ScrollView>
