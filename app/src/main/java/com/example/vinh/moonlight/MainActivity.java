@@ -18,7 +18,7 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
     @Override
     public void onItemSelected(Uri contentUri) {
         if (mTwoPane) {
-            Log.v(App.getTag(), "TwoPane onItemSelected");
+            //Log.v(App.getTag(), "TwoPane onItemSelected");
             // In two-pane mode, show the detail view in this activity by
             // adding or replacing the detail fragment using a
             // fragment transaction.
@@ -31,7 +31,7 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
                     .replace(R.id.weather_detail_container, fragment, DETAILFRAGMENT_TAG)
                     .commit();
         } else {
-            Log.v(App.getTag(), "OnePane onItemSelected");
+            //Log.v(App.getTag(), "OnePane onItemSelected");
             Intent intent = new Intent(this, DetailActivity.class)
                     .setData(contentUri);
             startActivity(intent);
@@ -44,7 +44,7 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
         setContentView(R.layout.activity_main);
         if (findViewById(R.id.weather_detail_container) != null)
         {
-            Log.v(App.getTag(), "TWO PANE MODE, onCreate");
+            //Log.v(App.getTag(), "TWO PANE MODE, onCreate");
             //Detail container view is only present in large screen layouts
             //(tablet). if this is true, activity should be in two-pane mode
             mTwoPane = true;
@@ -61,23 +61,6 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
             mTwoPane = false;
         mLocation = Utility.getPreferredLocation(this);
     }
-
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//
-//        //If current location is not the same as in settings, update to new location
-//        String pref_location = Utility.getPreferredLocation(getApplicationContext());
-//        if (!pref_location.equals(mLocation))
-//        {
-//            ForecastFragment ff = (ForecastFragment)getSupportFragmentManager().
-//                    findFragmentById(R.id.fragment_forecast);
-//
-//            //updates weather and restarts the loader
-//            ff.onLocationChanged();
-//            mLocation = pref_location;
-//        }
-//    }
 
     @Override
     protected void onResume() {
