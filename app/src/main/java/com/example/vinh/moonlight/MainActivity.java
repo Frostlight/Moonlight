@@ -60,6 +60,12 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
         else
             mTwoPane = false;
         mLocation = Utility.getPreferredLocation(this);
+
+        //pipeline to ForecastAdapter whether or not to use today's view
+        //depending on two pane or one pane (tablet or phone)
+        ForecastFragment forecastFragment = ((ForecastFragment) getSupportFragmentManager()
+            .findFragmentById(R.id.fragment_forecast));
+        forecastFragment.setUseTodayLayout(!mTwoPane);
     }
 
     @Override

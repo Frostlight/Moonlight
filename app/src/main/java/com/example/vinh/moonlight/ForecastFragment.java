@@ -35,6 +35,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     static final String SCROLL_POSITION = "scrollpos";
     private ForecastAdapter mForecastAdapter;
     private int mPosition;
+    private boolean mUseTodayLayout;
     private ListView mListView;
 
     private static final int FORECAST_LOADER = 0;
@@ -198,6 +199,12 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     public void onLoaderReset(Loader<Cursor> loader) {
         //Log.v(App.getTag(), "onLoaderReset()");
         mForecastAdapter.swapCursor(null);
+    }
+
+    public void setUseTodayLayout(boolean useTodayLayout) {
+        mUseTodayLayout = useTodayLayout;
+        if (mForecastAdapter != null)
+            mForecastAdapter.setUseTodayLayout(mUseTodayLayout);
     }
 
     /*** A callback interface that all activities containing this fragment must
