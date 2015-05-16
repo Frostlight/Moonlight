@@ -57,8 +57,10 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
                         .commit();
             }
         }
-        else
+        else {
             mTwoPane = false;
+            getSupportActionBar().setElevation(0f);
+        }
         mLocation = Utility.getPreferredLocation(this);
 
         //pipeline to ForecastAdapter whether or not to use today's view

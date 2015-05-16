@@ -3,6 +3,17 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
     </style>
 
+    <style name="ForecastTheme" parent="AppTheme">
+        <item name="android:actionBarStyle">@style/ActionBar.Solid.Moonlight.NoTitle</item>
+        <item name="actionBarStyle">@style/ActionBar.Solid.Moonlight.NoTitle</item>
+    </style>
+
+    <style name="ActionBar.Solid.Moonlight.NoTitle" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="android:displayOptions">useLogo|showHome</item>
+        <item name="displayOptions">useLogo|showHome</item>
+        <item name="logo">@drawable/ic_logo</item>
+    </style>
+
     <!-- textview for listitems in forecastFragment -->
     <style name="list_item_textview">
         <item name="android:layout_width">fill_parent</item>
