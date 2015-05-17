@@ -44,6 +44,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     private TextView mHumidityView;
     private TextView mWindView;
     private TextView mPressureView;
+    private String mDisplayString;
 
     private static final String[] FORECAST_COLUMNS = {
             // In this case the id needs to be fully qualified with a table name, since
@@ -98,10 +99,20 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         // Inflate the menu; this adds items to the action bar if it is present.
         inflater.inflate(R.menu.menu_detailfragment, menu);
 
-        //Get the action provider for the share menu button, so we can set the share intent
-        //later (using cursorLoader)
+        //Get the action provider for the share menu button, so we can set the share intent with it
+        //Two cases: 1) loader initialises first 2) onCreateOptionsMenu initialises first
+        //   1) if the loader initialises first, we just set the share intent here, since
+        //      we already have the string to share from the loader
+        //   2) if onCreateOptionsMenu initialises first (this), we'll set mShareActionProvider now
+        //      and let the cursor loader set the share intent later
         MenuItem menuItem = menu.findItem(R.id.share);
         mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
+        if (mDisplayString != null) {
+            //this means the loader finished initializing first
+            //we just set the share intent here in that case
+            Intent shareIntent = createIntent(mDisplayString);
+            mShareActionProvider.setShareIntent(shareIntent);
+        }
     }
 
     @Override
@@ -136,6 +147,15 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             mUri = updatedUri;
             getLoaderManager().restartLoader(DETAIL_LOADER, null, this);
         }
+    }
+
+    //creates an share intent with the display_string sent as text
+    private Intent createIntent(String display_string)
+    {
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("text/plain");
+        shareIntent.putExtra(Intent.EXTRA_TEXT, display_string + " #MoonlightApp");
+        return shareIntent;
     }
 
     @Override
@@ -198,18 +218,24 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             mPressureView.setText(Utility.formatPressure(getActivity(), data.getDouble(COL_PRESSURE)));
 
             //Set the text used by the ShareActionProvider
-            String display_string = Utility.formatDate(date) + " - " + description + " - " +
+            String displayString = Utility.formatDate(date) + " - " + description + " - " +
                     max_temp + "/" + min_temp;
-            Intent shareIntent = new Intent(Intent.ACTION_SEND);
-            shareIntent.setType("text/plain");
-            shareIntent.putExtra(Intent.EXTRA_TEXT, display_string + " #MoonlightApp");
 
-            if (mShareActionProvider != null)
+            if (mShareActionProvider != null) {
+                //this means onCreateOptionsMenu already executed, so set the share intent here
+                Intent shareIntent = createIntent(displayString);
                 mShareActionProvider.setShareIntent(shareIntent);
+            } else {
+                //Otherwise, initialise a member variable mDisplayString so onCreateOptionsMenu
+                //can initialise the shareIntent instead
+                mDisplayString = displayString;
+            }
         }
     }
 
     //Empty because no data is held that needs to be cleaned up
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {}
+
+
 }

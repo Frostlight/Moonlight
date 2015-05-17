@@ -1,6 +1,7 @@
 <resources>
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:actionMenuTextColor">@color/white</item>
     </style>
 
     <style name="ForecastTheme" parent="AppTheme">
@@ -8,9 +9,10 @@
         <item name="actionBarStyle">@style/ActionBar.Solid.Moonlight.NoTitle</item>
     </style>
 
-    <style name="ActionBar.Solid.Moonlight.NoTitle" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+    <style name="ActionBar.Solid.Moonlight.NoTitle" parent="@style/Widget.AppCompat.Light.ActionBar.Solid">
         <item name="android:displayOptions">useLogo|showHome</item>
         <item name="displayOptions">useLogo|showHome</item>
+        <item name="android:textColor">@color/white</item>
         <item name="logo">@drawable/ic_logo</item>
     </style>
 
