@@ -6,4 +6,19 @@
         <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
         <item name="android:fontFamily">sans-serif-condensed</item>
     </style>
+
+    <!-- Detail text -->
+    <style name="detail_text_condensed">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+        <item name="android:fontFamily">sans-serif-condensed</item>
+    </style>
+
+    <style name="detail_text_light">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+    </style>
 </resources>
