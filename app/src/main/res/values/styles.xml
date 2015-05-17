@@ -25,4 +25,10 @@
     <style name="list_item_textview_scale" parent="list_item_textview">
         <item name="android:width">200dp</item>
     </style>
+
+    <!-- List padding for phone -->
+    <style name="list_padding">
+        <item name="android:paddingLeft">@dimen/activity_horizontal_margin</item>
+        <item name="android:paddingRight">@dimen/activity_horizontal_margin</item>
+    </style>
 </resources>

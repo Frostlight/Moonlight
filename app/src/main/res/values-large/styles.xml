@@ -3,4 +3,9 @@
     <style name="list_item_textview_scale"  parent="list_item_textview">
         <item name="android:width">125dp</item>
     </style>
+
+    <!-- Only left padding for tablets -->
+    <style name="list_padding">
+        <item name="android:paddingLeft">@dimen/activity_horizontal_margin</item>
+    </style>
 </resources>

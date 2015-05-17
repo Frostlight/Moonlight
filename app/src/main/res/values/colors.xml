@@ -3,5 +3,6 @@
     <color name="dark_grey">#949494</color>
     <color name="grey">#bbbbbb</color>
     <color name="light_grey">#dddddd</color>
+    <color name="lighter_grey">#eeeeee</color>
     <color name="white">#ffffff</color>
 </resources>
