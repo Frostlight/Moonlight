@@ -16,7 +16,7 @@
         android:paddingTop="5dp"
         android:gravity="center_vertical">
         <TextView
-            xmlns:android="http://schemas.android.com/apk/res/android"
+            style="@style/list_item_textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
@@ -24,7 +24,7 @@
             android:paddingBottom="7.5dp"
             android:id="@+id/list_item_date_textview" />
         <TextView
-            xmlns:android="http://schemas.android.com/apk/res/android"
+            style="@style/list_item_textview"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -33,7 +33,7 @@
             android:id="@+id/list_item_high_textview"
             android:padding="2.5dp" />
         <TextView
-            xmlns:android="http://schemas.android.com/apk/res/android"
+            style="@style/list_item_textview"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:paddingTop="2.5dp"
@@ -52,12 +52,14 @@
         <ImageView
             android:id="@+id/list_item_icon"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_gravity="center"
             android:layout_weight="1"
+            android:contentDescription="@string/image_forecast"
             android:src="@drawable/ic_clear" />
         <TextView
             style="@style/list_item_textview"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:gravity="center"
             android:text="@string/default_weather"
             android:id="@+id/list_item_forecast_textview" />

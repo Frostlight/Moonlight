@@ -1,0 +1,6 @@
+<resources>
+    <!-- Static size for textview (tablet) -->
+    <style name="list_item_textview_scale"  parent="list_item_textview">
+        <item name="android:width">125dp</item>
+    </style>
+</resources>

@@ -20,9 +20,12 @@
         android:paddingEnd="15dp"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
+        android:layout_weight="8"
         android:gravity="center_vertical">
+        <!-- Static size width here to maintain position -->
         <TextView
-            style="@style/list_item_textview"
+            style="@style/list_item_textview_scale"
+            android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="@string/default_day"
             android:id="@+id/list_item_date_textview" />
         <TextView
@@ -31,18 +34,20 @@
             android:id="@+id/list_item_forecast_textview" />
         </LinearLayout>
     <LinearLayout
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_weight="4"
         android:gravity="center_vertical">
         <TextView
             style="@style/list_item_textview"
-            android:gravity="end"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:gravity="start"
             android:text="@string/default_temp_high"
             android:id="@+id/list_item_high_textview" />
         <TextView
             style="@style/list_item_textview"
-            android:gravity="end"
+            android:gravity="start"
             android:text="@string/default_temp_low"
             android:id="@+id/list_item_low_textview" />
     </LinearLayout>
