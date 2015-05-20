@@ -33,7 +33,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     static final String DETAIL_URI = "URI";
     public Uri mUri;
 
-    //Member variables: the ShareActionProvider and references to all the fragment's views
+    // Member variables: the ShareActionProvider and references to all the fragment's views
     private ShareActionProvider mShareActionProvider;
     private ImageView mIconView;
     private TextView mDayNameView;
@@ -99,8 +99,8 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         // Inflate the menu; this adds items to the action bar if it is present.
         inflater.inflate(R.menu.menu_detailfragment, menu);
 
-        //Get the action provider for the share menu button, so we can set the share intent with it
-        //Two cases: 1) loader initialises first 2) onCreateOptionsMenu initialises first
+        // Get the action provider for the share menu button, so we can set the share intent with it
+        // Two cases: 1) loader initialises first 2) onCreateOptionsMenu initialises first
         //   1) if the loader initialises first, we just set the share intent here, since
         //      we already have the string to share from the loader
         //   2) if onCreateOptionsMenu initialises first (this), we'll set mShareActionProvider now
@@ -108,8 +108,8 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         MenuItem menuItem = menu.findItem(R.id.share);
         mShareActionProvider = (ShareActionProvider) MenuItemCompat.getActionProvider(menuItem);
         if (mDisplayString != null) {
-            //this means the loader finished initializing first
-            //we just set the share intent here in that case
+            // This means the loader finished initializing first
+            // We just set the share intent here in that case
             Intent shareIntent = createIntent(mDisplayString);
             mShareActionProvider.setShareIntent(shareIntent);
         }
@@ -118,7 +118,7 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        //get Uri from callback
+        // Get Uri from callback
         Bundle arguments = getArguments();
         if (arguments != null)
             mUri = arguments.getParcelable(DETAIL_URI);
@@ -138,8 +138,12 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         return rootView;
     }
 
+    /**
+     * Prepare the Uri, since the location has changed
+     * @param newLocation The new location that the user changed it to
+     */
     void onLocationChanged( String newLocation ) {
-        // replace the uri, since the location has changed
+        // Prepare the uri, since the location has changed
         Uri uri = mUri;
         if (uri != null) {
             long date = WeatherContract.WeatherEntry.getDateFromUri(uri);
@@ -149,7 +153,11 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
         }
     }
 
-    //creates an share intent with the display_string sent as text
+    /**
+     * Creates a new share intent with the display string sent as text
+     * @param display_string The display string sent as text in the intent
+     * @return The intent that was created
+     */
     private Intent createIntent(String display_string)
     {
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
@@ -172,18 +180,18 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        //Regenerate the detail output by using data from the cursor
-        //Display it on the TextView
+        // Regenerate the detail output by using data from the cursor
+        // Display it on the TextView
         if (data.moveToFirst()) {
-            //Set day name textview
+            // Set day name textview
             long date = data.getLong(COL_WEATHER_DATE);
-            //TextView dayNameView = (TextView) getView().findViewById(R.id.list_item_dayname_textview);
+            // TextView dayNameView = (TextView) getView().findViewById(R.id.list_item_dayname_textview);
             mDayNameView.setText(Utility.getDayName(getActivity(), date));
 
-            //Set date textview
+            // Set date textview
             mDateView.setText(Utility.getFormattedMonthDay(getActivity(), date));
 
-            //Set high and low temperature textviews
+            // Set high and low temperature textviews
             Boolean isMetric = Utility.isMetric(getActivity());
             String max_temp = Utility.formatTemperature(
                     getActivity(), data.getDouble(COL_WEATHER_MAX_TEMP), isMetric);
@@ -192,48 +200,47 @@ public class DetailFragment extends Fragment implements LoaderManager.LoaderCall
             mHighTempView.setText(max_temp);
             mLowTempView.setText(min_temp);
 
-            //get Weather condition ID from cursor, set weather image using it
+            // Get Weather condition ID from cursor, set weather image using it
             int weatherID = data.getInt(COL_WEATHER_CONDITION_ID);
             mIconView.setImageResource(Utility.getArtResourceForWeatherCondition(weatherID));
 
-            //Set weather description
+            // Set weather description
             String description = data.getString(COL_WEATHER_DESC);
             mDescriptionView.setText(description);
 
-            //Set humidity textview
+            // Set humidity textview
             double humidity = data.getDouble(COL_HUMIDITY);
-            //Humidity is invisible if zero (that means data wasn't available)
+            // Humidity is invisible if zero (that means data wasn't available)
             if (humidity == 0)
                 mHumidityView.setVisibility(View.GONE);
             else
                 mHumidityView.setText(Utility.formatHumidity(getActivity(), humidity));
 
-            //Set wind speed and direction textview (windspeed is in mph)
-            //Log.v(App.getTag(), "Windspeed: " + data.getString(COL_WINDSPEED));
+            // Set wind speed and direction textview (windspeed is in mph)
             double windSpeed = data.getDouble(COL_WINDSPEED);
             double windDegrees = data.getDouble(COL_DEGREES);
             mWindView.setText(Utility.formatWind(getActivity(), windSpeed, windDegrees));
 
-            //Set pressure textview
+            // Set pressure textview
             mPressureView.setText(Utility.formatPressure(getActivity(), data.getDouble(COL_PRESSURE)));
 
-            //Set the text used by the ShareActionProvider
+            // Set the text used by the ShareActionProvider
             String displayString = Utility.formatDate(date) + " - " + description + " - " +
                     max_temp + "/" + min_temp;
 
             if (mShareActionProvider != null) {
-                //this means onCreateOptionsMenu already executed, so set the share intent here
+                // This means onCreateOptionsMenu already executed, so set the share intent here
                 Intent shareIntent = createIntent(displayString);
                 mShareActionProvider.setShareIntent(shareIntent);
             } else {
-                //Otherwise, initialise a member variable mDisplayString so onCreateOptionsMenu
-                //can initialise the shareIntent instead
+                // Otherwise, initialise a member variable mDisplayString so onCreateOptionsMenu
+                // can initialise the shareIntent instead
                 mDisplayString = displayString;
             }
         }
     }
 
-    //Empty because no data is held that needs to be cleaned up
+    // Empty because no data is held that needs to be cleaned up
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {}
 

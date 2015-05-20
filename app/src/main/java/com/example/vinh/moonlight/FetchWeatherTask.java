@@ -46,8 +46,6 @@ import java.util.Date;
 import java.util.Vector;
 
 public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
-
-    private final String LOG_TAG = FetchWeatherTask.class.getSimpleName();
     private final Context mContext;
 
     public FetchWeatherTask(Context context) {
@@ -85,19 +83,18 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
         }
         // Otherwise, insert it using the content resolver and the base URI
         else {
-            //create new ContentValues and fill with information to store into DB
+            // Create new ContentValues and fill with information to store into DB
             ContentValues locationValues = new ContentValues();
             locationValues.put(WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING, locationSetting);
             locationValues.put(WeatherContract.LocationEntry.COLUMN_CITY_NAME, cityName);
             locationValues.put(WeatherContract.LocationEntry.COLUMN_COORD_LAT, lat);
             locationValues.put(WeatherContract.LocationEntry.COLUMN_COORD_LONG, lon);
 
-            //this inserts and returns the URI of the newly inserted item
+            // This inserts and returns the URI of the newly inserted item
             Uri insert_uri = mContext.getContentResolver().insert(
                 WeatherContract.LocationEntry.CONTENT_URI, locationValues);
-            //Log.v(App.getTag(), "Uri insertion = " + insert_uri.toString());
 
-            //parse the ID from new LocationEntry URI
+            // Parse the ID from new LocationEntry URI
             location_id = ContentUris.parseId(insert_uri);
         }
         return location_id;
@@ -196,7 +193,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
                 // Get the JSON object representing the day
                 JSONObject dayForecast = weatherArray.getJSONObject(i);
 
-                // Cheating to convert this to UTC time, which is what we want anyhow
+                // Convert this to UTC time, which is what we want anyhow
                 dateTime = dayTime.setJulianDay(julianStartDay+i);
 
                 pressure = dayForecast.getDouble(OWM_PRESSURE);
@@ -234,15 +231,15 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
             }
 
             int inserted = 0;
-            // add to database
+            // Add to database
             if ( cVVector.size() > 0 ) {
-                // call bulkInsert to add the weatherEntries to the database
+                // Call bulkInsert to add the weatherEntries to the database
                 inserted = mContext.getContentResolver().bulkInsert(WeatherEntry.CONTENT_URI,
                         cVVector.toArray(new ContentValues[cVVector.size()]));
             }
-            Log.d(LOG_TAG, "FetchWeatherTask Complete. " + inserted + " Inserted");
+            Log.d(App.getTag(), "FetchWeatherTask Complete. " + inserted + " Inserted");
         } catch (JSONException e) {
-            Log.e(LOG_TAG, e.getMessage(), e);
+            Log.e(App.getTag(), e.getMessage(), e);
             e.printStackTrace();
         }
     }
@@ -319,11 +316,11 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
             try {
                 getWeatherDataFromJson(forecastJsonStr, locationQuery);
             } catch (JSONException e) {
-                Log.e(LOG_TAG, "Error ", e);
+                Log.e(App.getTag(), "Error ", e);
                 e.printStackTrace();
             }
         } catch (IOException e) {
-            Log.e(LOG_TAG, "Error ", e);
+            Log.e(App.getTag(), "Error ", e);
             e.printStackTrace();
             // If the code didn't successfully get the weather data, there's no point in attempting
             // to parse it.
@@ -336,7 +333,7 @@ public class FetchWeatherTask extends AsyncTask<String, Void, Void> {
                 try {
                     reader.close();
                 } catch (final IOException e) {
-                    Log.e(LOG_TAG, "Error closing stream", e);
+                    Log.e(App.getTag(), "Error closing stream", e);
                 }
             }
         }

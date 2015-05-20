@@ -18,7 +18,6 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
     @Override
     public void onItemSelected(Uri contentUri) {
         if (mTwoPane) {
-            //Log.v(App.getTag(), "TwoPane onItemSelected");
             // In two-pane mode, show the detail view in this activity by
             // adding or replacing the detail fragment using a
             // fragment transaction.
@@ -31,7 +30,6 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
                     .replace(R.id.weather_detail_container, fragment, DETAILFRAGMENT_TAG)
                     .commit();
         } else {
-            //Log.v(App.getTag(), "OnePane onItemSelected");
             Intent intent = new Intent(this, DetailActivity.class)
                     .setData(contentUri);
             startActivity(intent);
@@ -44,12 +42,11 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
         setContentView(R.layout.activity_main);
         if (findViewById(R.id.weather_detail_container) != null)
         {
-            //Log.v(App.getTag(), "TWO PANE MODE, onCreate");
-            //Detail container view is only present in large screen layouts
-            //(tablet). if this is true, activity should be in two-pane mode
+            // Detail container view is only present in large screen layouts
+            // (tablet). if this is true, activity should be in two-pane mode
             mTwoPane = true;
 
-            //initialize detail fragment with transaction
+            // Initialize detail fragment with transaction
             if (savedInstanceState == null)
             {
                 getSupportFragmentManager().beginTransaction()
@@ -63,8 +60,8 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
         }
         mLocation = Utility.getPreferredLocation(this);
 
-        //pipeline to ForecastAdapter whether or not to use today's view
-        //depending on two pane or one pane (tablet or phone)
+        // Pipeline to ForecastAdapter whether or not to use today's view
+        // Depending on two pane or one pane (tablet or phone)
         ForecastFragment forecastFragment = ((ForecastFragment) getSupportFragmentManager()
             .findFragmentById(R.id.fragment_forecast));
         forecastFragment.setUseTodayLayout(!mTwoPane);
@@ -74,7 +71,7 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
     protected void onResume() {
         super.onResume();
         String location = Utility.getPreferredLocation( this );
-        // update the location in our second pane using the fragment manager
+        // Update the location in our second pane using the fragment manager
         if (location != null && !location.equals(mLocation)) {
             ForecastFragment ff = (ForecastFragment)getSupportFragmentManager().findFragmentById(R.id.fragment_forecast);
             if ( null != ff ) {
@@ -118,21 +115,19 @@ public class MainActivity extends ActionBarActivity implements ForecastFragment.
                 return true;
             //Implicit intent to open maps with preferred location (from preferences)
             case R.id.view_map:
-                //the base url and query names
-                //format is geo:0,0?q=(preferred location)
+                // The base url and query names
+                // Format is geo:0,0?q=(preferred location)
                 final String QUERY_PARAM = "q";
 
-                //get preferred location from preferences
+                // Get preferred location from preferences
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
                 String location = prefs.getString(getString(R.string.pref_location_key),
                         getString(R.string.pref_location_default));
-                //Log.v(App.getTag(), "Location: " + location);
 
-                //build the uri and launch intent
+                // Build the uri and launch intent
                 Uri built_uri = Uri.parse("geo:"+Uri.encode("0,0")+"?").buildUpon()
                         .appendQueryParameter(QUERY_PARAM, location)
                         .build();
-                //Log.v(App.getTag(), "Built uri: " + built_uri.toString());
                 showMap(built_uri);
             default:
                 return super.onOptionsItemSelected(item);

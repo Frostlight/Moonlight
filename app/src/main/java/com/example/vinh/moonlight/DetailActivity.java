@@ -16,8 +16,8 @@ public class DetailActivity extends ActionBarActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         if (savedInstanceState == null) {
-            //create the detail fragment, add it to the activity
-            //using a fragment transaction
+            // Create the detail fragment, add it to the activity
+            // using a fragment transaction
 
             Bundle arguments = new Bundle();
             arguments.putParcelable(DetailFragment.DETAIL_URI, getIntent().getData());
@@ -40,11 +40,7 @@ public class DetailActivity extends ActionBarActivity  {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        //noinspection SimplifiableIfStatement
-
+        // Handle action bar item clicks here
         switch (item.getItemId()) {
             case R.id.action_settings:
                 //Explicit intent to start settings

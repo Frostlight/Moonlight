@@ -43,9 +43,6 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
             // In this case the id needs to be fully qualified with a table name, since
             // the content provider joins the location & weather tables in the background
             // (both have an _id column)
-            // On the one hand, that's annoying.  On the other, you can search the weather table
-            // using the location set by the user, which is only in the Location table.
-            // So the convenience is worth it.
             WeatherContract.WeatherEntry.TABLE_NAME + "." + WeatherContract.WeatherEntry._ID,
             WeatherContract.WeatherEntry.COLUMN_DATE,
             WeatherContract.WeatherEntry.COLUMN_SHORT_DESC,
@@ -76,7 +73,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        //allows fragment to handle menu events
+        // Allows fragment to handle menu events
         setHasOptionsMenu(true);
     }
 
@@ -91,7 +88,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
     {
-        //inflate the menu option
+        // Inflate the menu options
         inflater.inflate(R.menu.forecast_fragment, menu);
     }
 
@@ -102,8 +99,6 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
             case R.id.action_refresh:
                 updateWeather();
             return true;
-            //case R.id.action_settings:
-            //    return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -134,16 +129,16 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
             }
         });
 
-        //get information from instance state if it exists
+        // Get information from instance state if it exists
         if (savedInstanceState != null && savedInstanceState.containsKey(SCROLL_POSITION))
             mPosition = savedInstanceState.getInt(SCROLL_POSITION);
         return rootView;
     }
 
-    //When tablets rotate, save current position
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        // When tablets rotate, save the current position
         if (mPosition != ListView.INVALID_POSITION)
         {
             outState.putInt(SCROLL_POSITION, mPosition);
@@ -156,11 +151,13 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         super.onActivityCreated(savedInstanceState);
     }
 
+    /**
+     * Asynchronously updates the weather entries stored in the database
+     */
     private void updateWeather() {
        FetchWeatherTask weatherTask = new FetchWeatherTask(getActivity());
        String location = Utility.getPreferredLocation(getActivity());
        weatherTask.execute(location);
-       //Log.v(App.getTag(), "Updating weather.");
        super.onStart();
     }
 
@@ -172,9 +169,8 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        //Log.v(App.getTag(), "onCreateLoader()");
         String locationSetting = Utility.getPreferredLocation(getActivity());
-        //sort order: ascending by date
+        // Sort order: ascending by date
         String sortOrder = WeatherContract.WeatherEntry.COLUMN_DATE + " ASC";
         Uri weatherForLocationUri = WeatherContract.WeatherEntry.buildWeatherLocationWithStartDate(
                 locationSetting, System.currentTimeMillis());
@@ -189,7 +185,8 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        //Log.v(App.getTag(), "onLoadFinished()");
+        // Scroll the listview to the last saved position (if it exists)
+        // Tablets only
         if (mPosition != ListView.INVALID_POSITION)
             mListView.smoothScrollToPosition(mPosition);
         mForecastAdapter.swapCursor(data);
@@ -197,7 +194,6 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        //Log.v(App.getTag(), "onLoaderReset()");
         mForecastAdapter.swapCursor(null);
     }
 
@@ -207,14 +203,13 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
             mForecastAdapter.setUseTodayLayout(mUseTodayLayout);
     }
 
-    /*** A callback interface that all activities containing this fragment must
-    * implement. This mechanism allows activities to be notified of item
-    * selections.
-    */
+    /**
+     * A callback interface that all activities containing this fragment must
+     * implement. This mechanism allows activities to be notified of item
+     * selections.
+     */
     public interface Callback {
-        /**
-         * DetailFragmentCallback for when an item has been selected.
-         */
+        // DetailFragmentCallback for when an item has been selected.
         public void onItemSelected(Uri dateUri);
     }
 }

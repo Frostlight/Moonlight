@@ -40,8 +40,8 @@ public class WeatherProvider extends ContentProvider {
     static{
         sWeatherByLocationSettingQueryBuilder = new SQLiteQueryBuilder();
         
-        //This is an inner join which looks like
-        //weather INNER JOIN location ON weather.location_id = location._id
+        // This is an inner join which looks like
+        // weather INNER JOIN location ON weather.location_id = location._id
         sWeatherByLocationSettingQueryBuilder.setTables(
                 WeatherContract.WeatherEntry.TABLE_NAME + " INNER JOIN " +
                         WeatherContract.LocationEntry.TABLE_NAME +
@@ -51,18 +51,18 @@ public class WeatherProvider extends ContentProvider {
                         "." + WeatherContract.LocationEntry._ID);
     }
 
-    //location.location_setting = ?
+    // location.location_setting = ?
     private static final String sLocationSettingSelection =
             WeatherContract.LocationEntry.TABLE_NAME+
                     "." + WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING + " = ? ";
 
-    //location.location_setting = ? AND date >= ?
+    // location.location_setting = ? AND date >= ?
     private static final String sLocationSettingWithStartDateSelection =
             WeatherContract.LocationEntry.TABLE_NAME+
                     "." + WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING + " = ? AND " +
                     WeatherContract.WeatherEntry.COLUMN_DATE + " >= ? ";
 
-    //location.location_setting = ? AND date = ?
+    // location.location_setting = ? AND date = ?
     private static final String sLocationSettingAndDaySelection =
             WeatherContract.LocationEntry.TABLE_NAME +
                     "." + WeatherContract.LocationEntry.COLUMN_LOCATION_SETTING + " = ? AND " +
@@ -116,14 +116,14 @@ public class WeatherProvider extends ContentProvider {
         final UriMatcher sURIMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         final String authority = WeatherContract.CONTENT_AUTHORITY;
 
-        //Corresponding code for each URI we add
+        // Corresponding code for each URI we add
         sURIMatcher.addURI(authority, WeatherContract.PATH_WEATHER, WEATHER);
         sURIMatcher.addURI(authority, WeatherContract.PATH_WEATHER + "/*", WEATHER_WITH_LOCATION);
         sURIMatcher.addURI(authority, WeatherContract.PATH_WEATHER + "/*/#", WEATHER_WITH_LOCATION_AND_DATE);
 
         sURIMatcher.addURI(authority, WeatherContract.PATH_LOCATION, LOCATION);
 
-        //Return the new matcher
+        // Return the new matcher
         return sURIMatcher;
     }
 
@@ -257,16 +257,16 @@ public class WeatherProvider extends ContentProvider {
                 throw new UnsupportedOperationException("Failed delete with uri: " + uri);
         }
 
-        //if rows were deleted, notify content observers
+        // If rows were deleted, notify content observers
         if (del_count > 0)
             getContext().getContentResolver().notifyChange(uri, null);
 
-        //return the number of rows deleted
+        // Return the number of rows deleted
         return del_count;
     }
 
     private void normalizeDate(ContentValues values) {
-        // normalize the date value
+        // Normalize the date value
         if (values.containsKey(WeatherContract.WeatherEntry.COLUMN_DATE)) {
             long dateValue = values.getAsLong(WeatherContract.WeatherEntry.COLUMN_DATE);
             values.put(WeatherContract.WeatherEntry.COLUMN_DATE,
@@ -298,11 +298,11 @@ public class WeatherProvider extends ContentProvider {
                 throw new UnsupportedOperationException("Failed delete with uri: " + uri);
         }
 
-        //if rows were update, notify content observers
+        // If rows were update, notify content observers
         if (update_count > 0)
             getContext().getContentResolver().notifyChange(uri, null);
 
-        //return the number of rows updated
+        // Return the number of rows updated
         return update_count;
     }
 
@@ -333,9 +333,8 @@ public class WeatherProvider extends ContentProvider {
         }
     }
 
-    // You do not need to call this method. This is a method specifically to assist the testing
-    // framework in running smoothly. You can read more at:
-    // http://developer.android.com/reference/android/content/ContentProvider.html#shutdown()
+    // A method specifically to assist the testing framework in running smoothly
+    // Reference: http://developer.android.com/reference/android/content/ContentProvider.html#shutdown()
     @Override
     @TargetApi(11)
     public void shutdown() {
