@@ -77,7 +77,7 @@ public class WeatherContract {
         // Location setting; can be a ZIP code, postal code, address, city, etc.
         public static final String COLUMN_LOCATION_SETTING = "location_setting";
 
-        // The city of the location
+        // The city of the location (can be the same as location_setting)
         public static final String COLUMN_CITY_NAME = "city_name";
 
         // Longitude coordinates of the location
@@ -89,7 +89,8 @@ public class WeatherContract {
 
     /**
      * Inner class that defines the table contents of the weather table
-     * Table: ID | Location Settings | City Name | Longitude | Latitude
+     * Table: ID | Location ID | Date | Weather ID | Short Description | Minimum Temperature |
+     *        Max Temperature | Humidity | Pressure | Wind Speed | Wind Direction (degrees)
      */
     public static final class WeatherEntry implements BaseColumns {
         /** ----------------  Uri definitions and functions ---------------- */
@@ -208,6 +209,7 @@ public class WeatherContract {
         public static final String COLUMN_WIND_SPEED = "wind";
 
         // Degrees are meteorological degrees (e.g, 0 is north, 180 is south).  Stored as floats.
+        // Stores the direction of the wind
         public static final String COLUMN_DEGREES = "degrees";
     }
 }
